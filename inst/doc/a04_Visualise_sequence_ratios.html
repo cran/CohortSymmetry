@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Step 3. Visualise the sequence ratios</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<style type="text/css">.tabwid {
+font-size: initial;
+padding-bottom: 1em;
+}
+.tabwid table{
+border-spacing:0px !important;
+border-collapse:collapse;
+line-height:1;
+margin-left:auto;
+margin-right:auto;
+border-width: 0;
+border-color: transparent;
+caption-side: top;
+}
+.tabwid-caption-bottom table{
+caption-side: bottom;
+}
+.tabwid_left table{
+margin-left:0;
+}
+.tabwid_right table{
+margin-right:0;
+}
+.tabwid td, .tabwid th {
+padding: 0;
+}
+.tabwid a {
+text-decoration: none;
+}
+.tabwid thead {
+background-color: transparent;
+}
+.tabwid tfoot {
+background-color: transparent;
+}
+.tabwid table tr {
+background-color: transparent;
+}
+.katex-display {
+margin: 0 0 !important;
+}
+</style>
+<script>document.addEventListener("DOMContentLoaded", function(event) {
+  var els = document.querySelectorAll(".tabwid");
+  var tabwid_link = document.querySelector('link[href*="tabwid.css"]')
+  if (tabwid_link === null) {
+    const tabwid_styles = document.evaluate("//style[contains(., 'tabwid')]", document, null, XPathResult.ANY_TYPE, null );
+    tabwid_link = tabwid_styles.iterateNext();
+  }
+
+  Array.prototype.forEach.call(els, function(template) {
+      const dest = document.createElement("div");
+      template.parentNode.insertBefore(dest, template.nextSibling)
+      dest.setAttribute("class", "flextable-shadow-host");
+      const fantome = dest.attachShadow({mode: 'open'});
+      fantome.appendChild(template);
+      if (tabwid_link !== null) {
+        fantome.appendChild(tabwid_link.cloneNode(true));
+      }
+  });
+});
+
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Step 3. Visualise the sequence ratios</h1>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this vignette we will explore the functionality and arguments of a
+set of functions that will help us to understand and visualise the
+sequence ratio results. In particular, we will delve into the following
+functions:</p>
+<ul>
+<li><code>tableSequenceRatios()</code>: to generate a table summarising
+the results.</li>
+<li><code>plotSequenceRatios()</code>: to plot the sequence ratios.</li>
+</ul>
+<p>This function builds-up on previous functions, such as
+<code>generateSequenceCohortSet()</code> and
+<code>summariseSequenceRatios()</code> function (explained in detail in
+previous vignettes: <strong>Step 1. Generate a sequence cohort</strong>
+and <strong>Step 2. Obtain the sequence ratios</strong> respectively).
+Hence, we will pick up the explanation from where we left off in the
+previous vignette.</p>
+<p>Recall we had the table <strong>intersect</strong> in the cdm
+reference and that the results of sequence ratio could produced as
+follows (<strong>Step 2. Obtain the sequence ratios</strong>):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">summariseSequenceRatios</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect)</span></code></pre></div>
+</div>
+<div id="table-output-of-the-sequence-ratio-results" class="section level1">
+<h1>Table output of the sequence ratio results</h1>
+<p>The function <code>tableSequenceRatios</code> inputs the result from
+<code>summariseSequenceRatios</code>, the default outputs a gt
+table.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result)</span></code></pre></div>
+<div id="knuayzsuga" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#knuayzsuga table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#knuayzsuga thead, #knuayzsuga tbody, #knuayzsuga tfoot, #knuayzsuga tr, #knuayzsuga td, #knuayzsuga th {
+border-style: none;
+}
+#knuayzsuga p {
+margin: 0;
+padding: 0;
+}
+#knuayzsuga .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#knuayzsuga .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#knuayzsuga .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#knuayzsuga .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#knuayzsuga .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#knuayzsuga .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#knuayzsuga .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#knuayzsuga .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#knuayzsuga .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#knuayzsuga .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#knuayzsuga .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#knuayzsuga .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#knuayzsuga .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#knuayzsuga .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#knuayzsuga .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#knuayzsuga .gt_from_md > :first-child {
+margin-top: 0;
+}
+#knuayzsuga .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#knuayzsuga .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#knuayzsuga .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#knuayzsuga .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#knuayzsuga .gt_row_group_first td {
+border-top-width: 2px;
+}
+#knuayzsuga .gt_row_group_first th {
+border-top-width: 2px;
+}
+#knuayzsuga .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#knuayzsuga .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#knuayzsuga .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#knuayzsuga .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#knuayzsuga .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#knuayzsuga .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#knuayzsuga .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#knuayzsuga .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#knuayzsuga .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#knuayzsuga .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#knuayzsuga .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#knuayzsuga .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#knuayzsuga .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#knuayzsuga .gt_left {
+text-align: left;
+}
+#knuayzsuga .gt_center {
+text-align: center;
+}
+#knuayzsuga .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#knuayzsuga .gt_font_normal {
+font-weight: normal;
+}
+#knuayzsuga .gt_font_bold {
+font-weight: bold;
+}
+#knuayzsuga .gt_font_italic {
+font-style: italic;
+}
+#knuayzsuga .gt_super {
+font-size: 65%;
+}
+#knuayzsuga .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#knuayzsuga .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#knuayzsuga .gt_indent_1 {
+text-indent: 5px;
+}
+#knuayzsuga .gt_indent_2 {
+text-indent: 10px;
+}
+#knuayzsuga .gt_indent_3 {
+text-indent: 15px;
+}
+#knuayzsuga .gt_indent_4 {
+text-indent: 20px;
+}
+#knuayzsuga .gt_indent_5 {
+text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Database name">Database name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index">Index</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker">Marker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Study population">Study population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index first, N (%)">Index first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker first, N (%)">Marker first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="CSR (95% CI)">CSR (95% CI)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="ASR (95% CI)">ASR (95% CI)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Database name" class="gt_row gt_left" style="text-align: left;">Synthea synthetic health database</td>
+<td headers="Index" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Aspirin</td>
+<td headers="Marker" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Acetaminophen</td>
+<td headers="Study population" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1917</td>
+<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,235 (64.4 %)</td>
+<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">682 (35.6 %)</td>
+<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1.81 (1.65 - 1.99)</td>
+<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.79 (1.63 - 1.96)</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<div id="arguments-used-to-suppress-columns" class="section level2">
+<h2>Arguments used to suppress columns</h2>
+<p>By default, it has many columns such as Index (name), Marker (name),
+Study population, CSR and ASR, some of these columns could be suppressed
+with relevant parameters. For example if one wants to not display study
+population, one could do the following:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                    <span class="at">studyPopulation =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="yvuziirpvp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yvuziirpvp table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#yvuziirpvp thead, #yvuziirpvp tbody, #yvuziirpvp tfoot, #yvuziirpvp tr, #yvuziirpvp td, #yvuziirpvp th {
+border-style: none;
+}
+#yvuziirpvp p {
+margin: 0;
+padding: 0;
+}
+#yvuziirpvp .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#yvuziirpvp .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#yvuziirpvp .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#yvuziirpvp .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#yvuziirpvp .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#yvuziirpvp .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#yvuziirpvp .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#yvuziirpvp .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#yvuziirpvp .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#yvuziirpvp .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#yvuziirpvp .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#yvuziirpvp .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#yvuziirpvp .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#yvuziirpvp .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#yvuziirpvp .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#yvuziirpvp .gt_from_md > :first-child {
+margin-top: 0;
+}
+#yvuziirpvp .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#yvuziirpvp .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#yvuziirpvp .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#yvuziirpvp .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#yvuziirpvp .gt_row_group_first td {
+border-top-width: 2px;
+}
+#yvuziirpvp .gt_row_group_first th {
+border-top-width: 2px;
+}
+#yvuziirpvp .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#yvuziirpvp .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#yvuziirpvp .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#yvuziirpvp .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#yvuziirpvp .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#yvuziirpvp .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#yvuziirpvp .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#yvuziirpvp .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#yvuziirpvp .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#yvuziirpvp .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#yvuziirpvp .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#yvuziirpvp .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#yvuziirpvp .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#yvuziirpvp .gt_left {
+text-align: left;
+}
+#yvuziirpvp .gt_center {
+text-align: center;
+}
+#yvuziirpvp .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#yvuziirpvp .gt_font_normal {
+font-weight: normal;
+}
+#yvuziirpvp .gt_font_bold {
+font-weight: bold;
+}
+#yvuziirpvp .gt_font_italic {
+font-style: italic;
+}
+#yvuziirpvp .gt_super {
+font-size: 65%;
+}
+#yvuziirpvp .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#yvuziirpvp .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#yvuziirpvp .gt_indent_1 {
+text-indent: 5px;
+}
+#yvuziirpvp .gt_indent_2 {
+text-indent: 10px;
+}
+#yvuziirpvp .gt_indent_3 {
+text-indent: 15px;
+}
+#yvuziirpvp .gt_indent_4 {
+text-indent: 20px;
+}
+#yvuziirpvp .gt_indent_5 {
+text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Database name">Database name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index">Index</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker">Marker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index first, N (%)">Index first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker first, N (%)">Marker first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="CSR (95% CI)">CSR (95% CI)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="ASR (95% CI)">ASR (95% CI)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Database name" class="gt_row gt_left" style="text-align: left;">Synthea synthetic health database</td>
+<td headers="Index" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Aspirin</td>
+<td headers="Marker" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Acetaminophen</td>
+<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,235 (64.4 %)</td>
+<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">682 (35.6 %)</td>
+<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1.81 (1.65 - 1.99)</td>
+<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.79 (1.63 - 1.96)</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Or suppress <code>cdmName</code> like so</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                    <span class="at">cdmName =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="buzwhscmpb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#buzwhscmpb table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#buzwhscmpb thead, #buzwhscmpb tbody, #buzwhscmpb tfoot, #buzwhscmpb tr, #buzwhscmpb td, #buzwhscmpb th {
+border-style: none;
+}
+#buzwhscmpb p {
+margin: 0;
+padding: 0;
+}
+#buzwhscmpb .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#buzwhscmpb .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#buzwhscmpb .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#buzwhscmpb .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#buzwhscmpb .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#buzwhscmpb .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#buzwhscmpb .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#buzwhscmpb .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#buzwhscmpb .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#buzwhscmpb .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#buzwhscmpb .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#buzwhscmpb .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#buzwhscmpb .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#buzwhscmpb .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#buzwhscmpb .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#buzwhscmpb .gt_from_md > :first-child {
+margin-top: 0;
+}
+#buzwhscmpb .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#buzwhscmpb .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#buzwhscmpb .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#buzwhscmpb .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#buzwhscmpb .gt_row_group_first td {
+border-top-width: 2px;
+}
+#buzwhscmpb .gt_row_group_first th {
+border-top-width: 2px;
+}
+#buzwhscmpb .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#buzwhscmpb .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#buzwhscmpb .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#buzwhscmpb .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#buzwhscmpb .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#buzwhscmpb .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#buzwhscmpb .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#buzwhscmpb .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#buzwhscmpb .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#buzwhscmpb .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#buzwhscmpb .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#buzwhscmpb .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#buzwhscmpb .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#buzwhscmpb .gt_left {
+text-align: left;
+}
+#buzwhscmpb .gt_center {
+text-align: center;
+}
+#buzwhscmpb .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#buzwhscmpb .gt_font_normal {
+font-weight: normal;
+}
+#buzwhscmpb .gt_font_bold {
+font-weight: bold;
+}
+#buzwhscmpb .gt_font_italic {
+font-style: italic;
+}
+#buzwhscmpb .gt_super {
+font-size: 65%;
+}
+#buzwhscmpb .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#buzwhscmpb .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#buzwhscmpb .gt_indent_1 {
+text-indent: 5px;
+}
+#buzwhscmpb .gt_indent_2 {
+text-indent: 10px;
+}
+#buzwhscmpb .gt_indent_3 {
+text-indent: 15px;
+}
+#buzwhscmpb .gt_indent_4 {
+text-indent: 20px;
+}
+#buzwhscmpb .gt_indent_5 {
+text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index">Index</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker">Marker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Study population">Study population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index first, N (%)">Index first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker first, N (%)">Marker first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="CSR (95% CI)">CSR (95% CI)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="ASR (95% CI)">ASR (95% CI)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Index" class="gt_row gt_left" style="text-align: left;">Aspirin</td>
+<td headers="Marker" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Acetaminophen</td>
+<td headers="Study population" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1917</td>
+<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,235 (64.4 %)</td>
+<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">682 (35.6 %)</td>
+<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1.81 (1.65 - 1.99)</td>
+<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.79 (1.63 - 1.96)</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>There are also <code>.options</code> argument that one may wish to
+specify. For example, the user can specify a title:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                    <span class="at">.options =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">&quot;Title&quot;</span>))</span></code></pre></div>
+<div id="lyqhzputit" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lyqhzputit table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#lyqhzputit thead, #lyqhzputit tbody, #lyqhzputit tfoot, #lyqhzputit tr, #lyqhzputit td, #lyqhzputit th {
+border-style: none;
+}
+#lyqhzputit p {
+margin: 0;
+padding: 0;
+}
+#lyqhzputit .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#lyqhzputit .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#lyqhzputit .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#lyqhzputit .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#lyqhzputit .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#lyqhzputit .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#lyqhzputit .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#lyqhzputit .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#lyqhzputit .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#lyqhzputit .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#lyqhzputit .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#lyqhzputit .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#lyqhzputit .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#lyqhzputit .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#lyqhzputit .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#lyqhzputit .gt_from_md > :first-child {
+margin-top: 0;
+}
+#lyqhzputit .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#lyqhzputit .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#lyqhzputit .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#lyqhzputit .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#lyqhzputit .gt_row_group_first td {
+border-top-width: 2px;
+}
+#lyqhzputit .gt_row_group_first th {
+border-top-width: 2px;
+}
+#lyqhzputit .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#lyqhzputit .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#lyqhzputit .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#lyqhzputit .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#lyqhzputit .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#lyqhzputit .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#lyqhzputit .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#lyqhzputit .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#lyqhzputit .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#lyqhzputit .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#lyqhzputit .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#lyqhzputit .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#lyqhzputit .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#lyqhzputit .gt_left {
+text-align: left;
+}
+#lyqhzputit .gt_center {
+text-align: center;
+}
+#lyqhzputit .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#lyqhzputit .gt_font_normal {
+font-weight: normal;
+}
+#lyqhzputit .gt_font_bold {
+font-weight: bold;
+}
+#lyqhzputit .gt_font_italic {
+font-style: italic;
+}
+#lyqhzputit .gt_super {
+font-size: 65%;
+}
+#lyqhzputit .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#lyqhzputit .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#lyqhzputit .gt_indent_1 {
+text-indent: 5px;
+}
+#lyqhzputit .gt_indent_2 {
+text-indent: 10px;
+}
+#lyqhzputit .gt_indent_3 {
+text-indent: 15px;
+}
+#lyqhzputit .gt_indent_4 {
+text-indent: 20px;
+}
+#lyqhzputit .gt_indent_5 {
+text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="8" class="gt_heading gt_title gt_font_normal gt_bottom_border" style="font-size: 15; text-align: center; font-weight: bold;">Title</td>
+    </tr>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Database name">Database name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index">Index</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker">Marker</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Study population">Study population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Index first, N (%)">Index first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="Marker first, N (%)">Marker first, N (%)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="CSR (95% CI)">CSR (95% CI)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="text-align: center; font-weight: bold;" scope="col" id="ASR (95% CI)">ASR (95% CI)</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="Database name" class="gt_row gt_left" style="text-align: left;">Synthea synthetic health database</td>
+<td headers="Index" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Aspirin</td>
+<td headers="Marker" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Acetaminophen</td>
+<td headers="Study population" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1917</td>
+<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1,235 (64.4 %)</td>
+<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">682 (35.6 %)</td>
+<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1.81 (1.65 - 1.99)</td>
+<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.79 (1.63 - 1.96)</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+<p>Similarly, <code>subtitle</code> and <code>caption</code> can also be
+defined this way.</p>
+</div>
+<div id="modify-type" class="section level2">
+<h2>Modify <code>type</code></h2>
+<p>Instead of a gt table, the user may also want to put the sequence
+ratio results in a flex table format (the rest of the arguments that we
+saw for a gt table also applies here):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">&quot;flextable&quot;</span>)</span></code></pre></div>
+<div class="tabwid"><style>.cl-867b5758{}.cl-8673b232{font-family:'Arial';font-size:10pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8673b250{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-8676a140{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8676a14a{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-8676b32e{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.2pt solid rgba(190, 190, 190, 1.00);border-top: 1.2pt solid rgba(190, 190, 190, 1.00);border-left: 1.2pt solid rgba(190, 190, 190, 1.00);border-right: 1.2pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8676b338{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(190, 190, 190, 1.00);border-top: 1pt solid rgba(190, 190, 190, 1.00);border-left: 1pt solid rgba(190, 190, 190, 1.00);border-right: 1pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-8676b339{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(190, 190, 190, 1.00);border-top: 1pt solid rgba(190, 190, 190, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-867b5758"><thead><tr style="overflow-wrap:break-word;"><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Database name</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Index</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Marker</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Study population</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Index first, N (%)</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">Marker first, N (%)</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">CSR (95% CI)</span></p></th><th class="cl-8676b32e"><p class="cl-8676a140"><span class="cl-8673b232">ASR (95% CI)</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-8676b338"><p class="cl-8676a14a"><span class="cl-8673b250">Synthea synthetic health database</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">Aspirin</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">Acetaminophen</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">1917</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">1,235 (64.4 %)</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">682 (35.6 %)</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">1.81 (1.65 - 1.99)</span></p></td><td class="cl-8676b339"><p class="cl-8676a14a"><span class="cl-8673b250">1.79 (1.63 - 1.96)</span></p></td></tr></tbody></table></div>
+<p>Or a tibble:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">&quot;tibble&quot;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 8</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;   `Database name`           Index Marker `Study population` `Index first, N (%)`</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                     &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;               </span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; 1 Synthea synthetic health… Aspi… Aceta… 1917               1,235 (64.4 %)      </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; # ℹ 3 more variables: `Marker first, N (%)` &lt;chr&gt;, `CSR (95% CI)` &lt;chr&gt;,</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; #   `ASR (95% CI)` &lt;chr&gt;</span></span></code></pre></div>
+<p>One may also wish to change the style of the output, see the R
+package visOmopResults for more information on how to define a style.
+The default style inherits from visOmopResults, however the user may set
+it to NULL for the gt/flextable default styling.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                    <span class="at">type =</span> <span class="st">&quot;flextable&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                    <span class="at">style =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="tabwid"><style>.cl-86cf1cf8{}.cl-86c76d5a{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-86cacb76{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-86cacb80{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-86cadada{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.2pt solid rgba(190, 190, 190, 1.00);border-top: 1.2pt solid rgba(190, 190, 190, 1.00);border-left: 1.2pt solid rgba(190, 190, 190, 1.00);border-right: 1.2pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86cadadb{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(190, 190, 190, 1.00);border-top: 1pt solid rgba(190, 190, 190, 1.00);border-left: 1pt solid rgba(190, 190, 190, 1.00);border-right: 1pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-86cadae4{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1pt solid rgba(190, 190, 190, 1.00);border-top: 1pt solid rgba(190, 190, 190, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 1pt solid rgba(190, 190, 190, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-86cf1cf8"><thead><tr style="overflow-wrap:break-word;"><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Database name</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Index</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Marker</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Study population</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Index first, N (%)</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">Marker first, N (%)</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">CSR (95% CI)</span></p></th><th class="cl-86cadada"><p class="cl-86cacb76"><span class="cl-86c76d5a">ASR (95% CI)</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-86cadadb"><p class="cl-86cacb80"><span class="cl-86c76d5a">Synthea synthetic health database</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">Aspirin</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">Acetaminophen</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">1917</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">1,235 (64.4 %)</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">682 (35.6 %)</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">1.81 (1.65 - 1.99)</span></p></td><td class="cl-86cadae4"><p class="cl-86cacb80"><span class="cl-86c76d5a">1.79 (1.63 - 1.96)</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+<div id="plot-output-of-the-sequence-ratio-results" class="section level1">
+<h1>Plot output of the sequence ratio results</h1>
+<p>Similarly, we also have <code>plotSequenceRatios()</code> to
+visualise the results.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>By default, it plots both the adjusted sequence ratios (and its CIs)
+and crude sequence ratios (and its CIs). One may wish to only plot
+adjusted one like so (note since only adjusted is plotted, only one
+colour needs to be specified):</p>
+<div id="modify-onlyasr-and-colours" class="section level2">
+<h2>Modify <code>onlyaSR</code> and <code>colours</code></h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>                   <span class="at">onlyaSR =</span> T,</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>                   <span class="at">colours =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>One could change the colour like so:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>                   <span class="at">onlyaSR =</span> T,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>                   <span class="at">colours =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="modify-plottitle" class="section level2">
+<h2>Modify <code>plotTitle</code></h2>
+<p>One could set the title like so:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>                   <span class="at">onlyaSR =</span> T,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>                   <span class="at">plotTitle =</span> <span class="st">&quot;Adjusted Sequence Ratio&quot;</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>                   <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="modify-labs" class="section level2">
+<h2>Modify <code>labs</code></h2>
+<p>One could also change the <span class="math inline">\(x\)</span> and
+<span class="math inline">\(y\)</span> labels like so:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result,</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>                   <span class="at">onlyaSR =</span> T,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                   <span class="at">plotTitle =</span> <span class="st">&quot;Adjusted Sequence Ratio&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                   <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                   <span class="at">labs =</span> <span class="fu">c</span>(<span class="st">&quot;sequence ratios&quot;</span>, <span class="st">&quot;analysis&quot;</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
