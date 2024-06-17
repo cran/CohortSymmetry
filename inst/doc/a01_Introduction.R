@@ -76,5 +76,5 @@ plotSequenceRatios(result = result,
 
 ## ----echo=FALSE, message=FALSE, out.width="100%", warning=FALSE---------------
 library(here)
-knitr::include_graphics(here("vignettes/figures/workflow.png"))
+knitr::include_graphics(here("vignettes/workflow.png"))
 

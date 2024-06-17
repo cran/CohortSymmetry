@@ -50,7 +50,7 @@ cdm$acetaminophen %>%
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 library(here)
-knitr::include_graphics(here("vignettes/figures/1-NoRestrictions.png"))
+knitr::include_graphics(here("vignettes/1-NoRestrictions.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
@@ -85,7 +85,7 @@ attr(cdm$intersect, "cohort_set")
 #    combinationWindow = c(0,Inf))
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
-knitr::include_graphics(here("vignettes/figures/2-studyPeriod.png"))
+knitr::include_graphics(here("vignettes/2-studyPeriod.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
@@ -104,7 +104,7 @@ cdm$intersect %>%
   dplyr::glimpse()
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
-knitr::include_graphics(here("vignettes/figures/3-PriorObservation.png"))
+knitr::include_graphics(here("vignettes/3-PriorObservation.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
@@ -144,7 +144,7 @@ cdm$intersect %>%
   dplyr::glimpse()
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
-knitr::include_graphics(here("vignettes/figures/4-washoutPeriod.png"))
+knitr::include_graphics(here("vignettes/4-washoutPeriod.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
@@ -183,7 +183,7 @@ cdm$intersect %>%
   dplyr::glimpse()
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
-knitr::include_graphics(here("vignettes/figures/5-combinationWindow_numbers.png"))
+knitr::include_graphics(here("vignettes/5-combinationWindow_numbers.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
@@ -213,7 +213,7 @@ cdm$intersect %>%
   dplyr::filter(subject_id %in% c(80,187))
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
-knitr::include_graphics(here("vignettes/figures/6-indexGap.png"))
+knitr::include_graphics(here("vignettes/6-indexGap.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
