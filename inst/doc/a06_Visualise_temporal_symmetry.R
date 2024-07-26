@@ -33,15 +33,26 @@ cdm <- cdm_from_con(
 )
 
 # Generate cohorts
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+aspirin_code <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm, 
+  name = "aspirin"
+)
+cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
   cdm = cdm,
   name = "aspirin",
-  ingredient = "aspirin")
+  conceptSet = aspirin_code
+)
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+acetaminophen_code <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm, 
+  name = "acetaminophen"
+)
+
+cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
   cdm = cdm,
   name = "acetaminophen",
-  ingredient = "acetaminophen")
+  conceptSet = acetaminophen_code
+)
 
 # Generate a sequence cohort
 cdm <- generateSequenceCohortSet(
@@ -75,4 +86,7 @@ plotTemporalSymmetry(result = temporal_symmetry,
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  plotTemporalSymmetry(result = temporal_symmetry,
 #                       scales = "fixed")
+
+## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
+#  CDMConnector::cdmDisconnect(cdm = cdm)
 

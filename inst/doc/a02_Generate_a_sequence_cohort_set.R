@@ -31,15 +31,26 @@ cdm <- cdm_from_con(
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 library(DrugUtilisation)
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+aspirin_code <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm, 
+  name = "aspirin"
+)
+cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
   cdm = cdm,
   name = "aspirin",
-  ingredient = "aspirin")
+  conceptSet = aspirin_code
+)
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+acetaminophen_code <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm, 
+  name = "acetaminophen"
+)
+
+cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
   cdm = cdm,
   name = "acetaminophen",
-  ingredient = "acetaminophen")
+  conceptSet = acetaminophen_code
+)
 
 cdm$aspirin %>% 
   dplyr::glimpse()
@@ -257,4 +268,7 @@ cdm <- generateSequenceCohortSet(
 
 cdm$intersect %>%
   dplyr::filter(subject_id %in% c(80,754)) 
+
+## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
+#  CDMConnector::cdmDisconnect(cdm = cdm)
 
