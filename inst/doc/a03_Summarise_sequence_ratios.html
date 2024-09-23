@@ -368,7 +368,7 @@ corresponding confidence intervals) using
 <code>summariseSequenceRatios()</code> function:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">summariseSequenceRatios</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>intersect</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -397,7 +397,7 @@ include <code>cohort_definition_id</code> <span class="math inline">\(=
 <code>summariseSequenceRatios()</code>, then one could do the
 following:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summariseSequenceRatios</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">cohortId =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">cohortId =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -425,7 +425,7 @@ is desired, for example 99% confidence interval, one can use the
 <code>confidenceInterval</code> argument:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">summariseSequenceRatios</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">confidenceInterval =</span> <span class="dv">99</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">confidenceInterval =</span> <span class="dv">99</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -453,7 +453,7 @@ Following Tsiropoulos et al. (2009), by default, the argument
 this, one could do something like:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">summariseSequenceRatios</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">movingAverageRestriction =</span> <span class="dv">600</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">movingAverageRestriction =</span> <span class="dv">600</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -477,7 +477,7 @@ this, one could do something like:</p>
 which results will be obscured. If 0, all results will be reported and
 the user could do this via:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">summariseSequenceRatios</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                        <span class="at">minCellCount =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                        <span class="at">minCellCount =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>

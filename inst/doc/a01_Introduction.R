@@ -18,7 +18,7 @@ library(duckdb)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- emptyCdmReference(cdmName = "mock") |>
-  mockPerson(nPerson = 100) |>
+  mockPerson(nPerson = 1000) |>
   mockObservationPeriod() |>
   mockCohort(
     name = "index_cohort",
@@ -34,12 +34,12 @@ cdm <- emptyCdmReference(cdmName = "mock") |>
   )
 
 con <- dbConnect(duckdb::duckdb())
-cdm <- copyCdmTo(con = con, cdm = cdm, schema = "main")
+cdm <- copyCdmTo(con = con, cdm = cdm, schema = "main", overwrite = T)
 
-cdm$index_cohort %>% 
+cdm$index_cohort |> 
   dplyr::glimpse()
 
-cdm$marker_cohort %>% 
+cdm$marker_cohort |> 
   dplyr::glimpse()
 
 
@@ -48,23 +48,25 @@ cdm <- generateSequenceCohortSet(
   cdm = cdm,
   indexTable = "index_cohort",
   markerTable = "marker_cohort",
-  name = "intersect"
+  name = "intersect",
+  combinationWindow = c(0, Inf)
 )
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-cdm$intersect %>% 
+cdm$intersect |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-result <- summariseTemporalSymmetry(cohort = cdm$intersect)
-result %>% dplyr::glimpse()
+result <- summariseTemporalSymmetry(cohort = cdm$intersect, 
+                                    timescale = "year")
+result |> dplyr::glimpse()
 
 plotTemporalSymmetry(result = result)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 result <- summariseSequenceRatios(cohort = cdm$intersect)
 
-result %>% dplyr::glimpse()
+result |> dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 tableSequenceRatios(result)

@@ -33,26 +33,15 @@ cdm <- cdm_from_con(
 )
 
 # Generate cohorts
-aspirin_code <- CodelistGenerator::getDrugIngredientCodes(
-  cdm = cdm, 
-  name = "aspirin"
-)
-cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
+cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "aspirin",
-  conceptSet = aspirin_code
-)
+  ingredient = "aspirin")
 
-acetaminophen_code <- CodelistGenerator::getDrugIngredientCodes(
-  cdm = cdm, 
-  name = "acetaminophen"
-)
-
-cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
+cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "acetaminophen",
-  conceptSet = acetaminophen_code
-)
+  ingredient = "acetaminophen")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 # Generate a sequence cohort
@@ -64,27 +53,27 @@ cdm <- generateSequenceCohortSet(
   combinationWindow = c(0,Inf))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseTemporalSymmetry(cohort = cdm$intersect) %>% 
+summariseTemporalSymmetry(cohort = cdm$intersect) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseTemporalSymmetry(cohort = cdm$intersect,
-                          cohortId = 1) %>% 
+                          cohortId = 1) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseTemporalSymmetry(cohort = cdm$intersect,
-                          timescale = "day") %>% 
+                          timescale = "day") |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseTemporalSymmetry(cohort = cdm$intersect,
-                          timescale = "year") %>% 
+                          timescale = "year") |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseTemporalSymmetry(cohort = cdm$intersect,
-                          minCellCount = 0) %>% 
+                          minCellCount = 0) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------

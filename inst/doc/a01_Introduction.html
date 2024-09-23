@@ -378,7 +378,7 @@ example, we will be using Omock package to generate a mock database with
 two mock cohorts: the <strong>index_cohort</strong> and the
 <strong>marker_cohort</strong>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">emptyCdmReference</span>(<span class="at">cdmName =</span> <span class="st">&quot;mock&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">mockPerson</span>(<span class="at">nPerson =</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">mockPerson</span>(<span class="at">nPerson =</span> <span class="dv">1000</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">mockObservationPeriod</span>() <span class="sc">|&gt;</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="fu">mockCohort</span>(</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;index_cohort&quot;</span>,</span>
@@ -394,27 +394,27 @@ two mock cohorts: the <strong>index_cohort</strong> and the
 <span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  )</span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(duckdb<span class="sc">::</span><span class="fu">duckdb</span>())</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">copyCdmTo</span>(<span class="at">con =</span> con, <span class="at">cdm =</span> cdm, <span class="at">schema =</span> <span class="st">&quot;main&quot;</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">copyCdmTo</span>(<span class="at">con =</span> con, <span class="at">cdm =</span> cdm, <span class="at">schema =</span> <span class="st">&quot;main&quot;</span>, <span class="at">overwrite =</span> T)</span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>cdm<span class="sc">$</span>index_cohort <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>cdm<span class="sc">$</span>index_cohort <span class="sc">|&gt;</span> </span>
 <span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/:memory:]</span></span>
 <span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 1, 1, 2, 6, 7, 10, 13, 13, 14, 14, 15, 17, 18,…</span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2001-02-15, 2001-10-29, 2003-03-16, 1999-11-11, …</span></span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2001-10-28, 2003-03-15, 2005-02-08, 2002-04-09, …</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 3, 3, 5, 5, 6, 7, 8, 8, 11, 13, 13, 15, 16, 16…</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2002-10-09, 2015-03-20, 2015-03-30, 2012-04-16, …</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2005-12-25, 2015-03-29, 2015-04-05, 2012-05-04, …</span></span>
 <span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>cdm<span class="sc">$</span>marker_cohort <span class="sc">%&gt;%</span> </span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>cdm<span class="sc">$</span>marker_cohort <span class="sc">|&gt;</span> </span>
 <span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
 <span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/:memory:]</span></span>
 <span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 1, 2, 3, 3, 5, 5, 6, 6, 6, 8, 8, 8, 9, 9, 9, 1…</span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2001-07-07, 2001-07-29, 1999-07-08, 2015-01-23, …</span></span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2001-07-28, 2007-05-21, 2002-10-15, 2015-03-13, …</span></span></code></pre></div>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 3, 4, 7, 8, 8, 9, 9, 9, 9, 10, 11, 12, 13, 13,…</span></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2002-06-25, 2015-02-19, 1989-12-27, 2014-03-07, …</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2006-01-28, 2015-06-25, 2001-08-06, 2014-03-17, …</span></span></code></pre></div>
 <p>Once we have established a connection to the database, we can use the
 <code>generateSequenceCohortSet()</code> function to find the
 intersection of the two cohorts. This function will provide us with the
@@ -424,53 +424,55 @@ individuals who appear in both cohorts, which will be named
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">cdm =</span> cdm,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">indexTable =</span> <span class="st">&quot;index_cohort&quot;</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">markerTable =</span> <span class="st">&quot;marker_cohort&quot;</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;intersect&quot;</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;intersect&quot;</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>See below that the generated cohort follows the format of an OMOP CDM
 cohort with the addition of two extra columns: <em>index_date</em> and
 <em>marker_date</em>. These columns correspond to the
 <em>cohort_start_date</em> in the <strong>index_cohort</strong> and the
 <strong>marker_cohort</strong>, respectively.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/:memory:]</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 2, 6, 13, 17, 18, 21, 25, 26, 28, 33, 35, 37, …</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2001-02-15, 1999-07-08, 2011-03-07, 2014-06-14, …</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2001-07-07, 1999-11-11, 2011-06-29, 2014-06-24, …</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; $ index_date           &lt;date&gt; 2001-02-15, 1999-11-11, 2011-03-07, 2014-06-24, …</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $ marker_date          &lt;date&gt; 2001-07-07, 1999-07-08, 2011-06-29, 2014-06-14, …</span></span></code></pre></div>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 3, 7, 8, 11, 16, 17, 21, 23, 24, 32, 35, 36, 39, …</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 2015-02-19, 2014-03-07, 1984-12-31, 2006-12-22, …</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 2015-03-20, 2014-03-08, 1985-04-23, 2007-08-13, …</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; $ index_date           &lt;date&gt; 2015-03-20, 2014-03-08, 1984-12-31, 2006-12-22, …</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; $ marker_date          &lt;date&gt; 2015-02-19, 2014-03-07, 1985-04-23, 2007-08-13, …</span></span></code></pre></div>
 <p>Once we have the intersect cohort, you are able to explore the
 temporal symmetry by using <code>summariseTemporalSymmetry</code> and
 <code>plotTemporalSymmetry()</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>result <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Rows: 13</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; $ result_id        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; $ cdm_name         &lt;chr&gt; &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock…</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; $ group_name       &lt;chr&gt; &quot;index_name &amp;&amp;&amp; marker_name&quot;, &quot;index_name &amp;&amp;&amp; marker_…</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; $ group_level      &lt;chr&gt; &quot;index_cohort &amp;&amp;&amp; marker_cohort&quot;, &quot;index_cohort &amp;&amp;&amp; m…</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;0&quot;, &quot;-7&quot;, &quot;-4&quot;, &quot;4&quot;, &quot;-5&quot;, &quot;2&quot;, &quot;-1&quot;, &quot;-3&quot;, &quot;1&quot;, &quot;3&quot;…</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;6&quot;, NA, NA, NA, NA, NA, NA</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="fu">plotTemporalSymmetry</span>(<span class="at">result =</span> result)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect, </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                                    <span class="at">timescale =</span> <span class="st">&quot;year&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>result <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Rows: 16</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; $ result_id        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; $ cdm_name         &lt;chr&gt; &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock&quot;, &quot;mock…</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; $ group_name       &lt;chr&gt; &quot;index_name &amp;&amp;&amp; marker_name&quot;, &quot;index_name &amp;&amp;&amp; marker_…</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; $ group_level      &lt;chr&gt; &quot;index_cohort &amp;&amp;&amp; marker_cohort&quot;, &quot;index_cohort &amp;&amp;&amp; m…</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;0&quot;, &quot;-4&quot;, &quot;6&quot;, &quot;-7&quot;, &quot;4&quot;, &quot;-2&quot;, &quot;7&quot;, &quot;-9&quot;, &quot;8&quot;, &quot;-6&quot;…</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;128&quot;, &quot;9&quot;, NA, NA, NA, &quot;29&quot;, NA, NA, NA, NA, &quot;119&quot;, …</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="fu">plotTemporalSymmetry</span>(<span class="at">result =</span> result)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>Next, we will use the <code>summariseSequenceRatios()</code> function
 to get the crude sequence ratios, adjusted sequence ratios, and the
 corresponding confidence intervals.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">summariseSequenceRatios</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>result <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>result <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Rows: 10</span></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; $ result_id        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1</span></span>
@@ -483,26 +485,26 @@ corresponding confidence intervals.</p>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;sequence_ratio&quot;, &quot;sequence_ratio&quot;, &quot;sequence_ratio&quot;,…</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;point_estimate&quot;, &quot;point_estimate&quot;, &quot;lower_CI&quot;, &quot;uppe…</span></span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;numeric&quot;, &quot;numeric&quot;, &quot;numeric&quot;, &quot;numeric&quot;, &quot;numeric&quot;…</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;0.833333333333333&quot;, &quot;1&quot;, &quot;0.356560793577192&quot;, &quot;1.918…</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;1.16111111111111&quot;, &quot;1.12037037037037&quot;, &quot;0.9516129527…</span></span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 <p>Finally, we can visualise the results using
 <code>tableSequenceRatios()</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">tableSequenceRatios</span>(result)</span></code></pre></div>
-<div id="mwivqtlymz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mwivqtlymz table {
+<div id="yqeckdwhkh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yqeckdwhkh table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#mwivqtlymz thead, #mwivqtlymz tbody, #mwivqtlymz tfoot, #mwivqtlymz tr, #mwivqtlymz td, #mwivqtlymz th {
+#yqeckdwhkh thead, #yqeckdwhkh tbody, #yqeckdwhkh tfoot, #yqeckdwhkh tr, #yqeckdwhkh td, #yqeckdwhkh th {
 border-style: none;
 }
-#mwivqtlymz p {
+#yqeckdwhkh p {
 margin: 0;
 padding: 0;
 }
-#mwivqtlymz .gt_table {
+#yqeckdwhkh .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -527,11 +529,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#mwivqtlymz .gt_caption {
+#yqeckdwhkh .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#mwivqtlymz .gt_title {
+#yqeckdwhkh .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -542,7 +544,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#mwivqtlymz .gt_subtitle {
+#yqeckdwhkh .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -553,7 +555,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#mwivqtlymz .gt_heading {
+#yqeckdwhkh .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -564,12 +566,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mwivqtlymz .gt_bottom_border {
+#yqeckdwhkh .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mwivqtlymz .gt_col_headings {
+#yqeckdwhkh .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -583,7 +585,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#mwivqtlymz .gt_col_heading {
+#yqeckdwhkh .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -602,7 +604,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#mwivqtlymz .gt_column_spanner_outer {
+#yqeckdwhkh .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -613,13 +615,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#mwivqtlymz .gt_column_spanner_outer:first-child {
+#yqeckdwhkh .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#mwivqtlymz .gt_column_spanner_outer:last-child {
+#yqeckdwhkh .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#mwivqtlymz .gt_column_spanner {
+#yqeckdwhkh .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -630,10 +632,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#mwivqtlymz .gt_spanner_row {
+#yqeckdwhkh .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#mwivqtlymz .gt_group_heading {
+#yqeckdwhkh .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -658,7 +660,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#mwivqtlymz .gt_empty_group_heading {
+#yqeckdwhkh .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -672,13 +674,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#mwivqtlymz .gt_from_md > :first-child {
+#yqeckdwhkh .gt_from_md > :first-child {
 margin-top: 0;
 }
-#mwivqtlymz .gt_from_md > :last-child {
+#yqeckdwhkh .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#mwivqtlymz .gt_row {
+#yqeckdwhkh .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -696,7 +698,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#mwivqtlymz .gt_stub {
+#yqeckdwhkh .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -708,7 +710,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mwivqtlymz .gt_stub_row_group {
+#yqeckdwhkh .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -721,13 +723,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#mwivqtlymz .gt_row_group_first td {
+#yqeckdwhkh .gt_row_group_first td {
 border-top-width: 2px;
 }
-#mwivqtlymz .gt_row_group_first th {
+#yqeckdwhkh .gt_row_group_first th {
 border-top-width: 2px;
 }
-#mwivqtlymz .gt_summary_row {
+#yqeckdwhkh .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -736,14 +738,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mwivqtlymz .gt_first_summary_row {
+#yqeckdwhkh .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#mwivqtlymz .gt_first_summary_row.thick {
+#yqeckdwhkh .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#mwivqtlymz .gt_last_summary_row {
+#yqeckdwhkh .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -752,7 +754,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mwivqtlymz .gt_grand_summary_row {
+#yqeckdwhkh .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -761,7 +763,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mwivqtlymz .gt_first_grand_summary_row {
+#yqeckdwhkh .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -770,7 +772,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#mwivqtlymz .gt_last_grand_summary_row_top {
+#yqeckdwhkh .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -779,10 +781,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#mwivqtlymz .gt_striped {
+#yqeckdwhkh .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#mwivqtlymz .gt_table_body {
+#yqeckdwhkh .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -790,7 +792,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#mwivqtlymz .gt_footnotes {
+#yqeckdwhkh .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -803,7 +805,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mwivqtlymz .gt_footnote {
+#yqeckdwhkh .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -811,7 +813,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mwivqtlymz .gt_sourcenotes {
+#yqeckdwhkh .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -824,57 +826,57 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#mwivqtlymz .gt_sourcenote {
+#yqeckdwhkh .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#mwivqtlymz .gt_left {
+#yqeckdwhkh .gt_left {
 text-align: left;
 }
-#mwivqtlymz .gt_center {
+#yqeckdwhkh .gt_center {
 text-align: center;
 }
-#mwivqtlymz .gt_right {
+#yqeckdwhkh .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#mwivqtlymz .gt_font_normal {
+#yqeckdwhkh .gt_font_normal {
 font-weight: normal;
 }
-#mwivqtlymz .gt_font_bold {
+#yqeckdwhkh .gt_font_bold {
 font-weight: bold;
 }
-#mwivqtlymz .gt_font_italic {
+#yqeckdwhkh .gt_font_italic {
 font-style: italic;
 }
-#mwivqtlymz .gt_super {
+#yqeckdwhkh .gt_super {
 font-size: 65%;
 }
-#mwivqtlymz .gt_footnote_marks {
+#yqeckdwhkh .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#mwivqtlymz .gt_asterisk {
+#yqeckdwhkh .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#mwivqtlymz .gt_indent_1 {
+#yqeckdwhkh .gt_indent_1 {
 text-indent: 5px;
 }
-#mwivqtlymz .gt_indent_2 {
+#yqeckdwhkh .gt_indent_2 {
 text-indent: 10px;
 }
-#mwivqtlymz .gt_indent_3 {
+#yqeckdwhkh .gt_indent_3 {
 text-indent: 15px;
 }
-#mwivqtlymz .gt_indent_4 {
+#yqeckdwhkh .gt_indent_4 {
 text-indent: 20px;
 }
-#mwivqtlymz .gt_indent_5 {
+#yqeckdwhkh .gt_indent_5 {
 text-indent: 25px;
 }
 </style>
@@ -895,11 +897,11 @@ text-indent: 25px;
     <tr><td headers="Database name" class="gt_row gt_left" style="text-align: left;">mock</td>
 <td headers="Index" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Index cohort</td>
 <td headers="Marker" class="gt_row gt_left" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">Marker cohort</td>
-<td headers="Study population" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">22</td>
-<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">10 (45.5 %)</td>
-<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">12 (54.5 %)</td>
-<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">0.83 (0.36 - 1.92)</td>
-<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.00 (0.43 - 2.30)</td></tr>
+<td headers="Study population" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">389</td>
+<td headers="Index first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">209 (53.7 %)</td>
+<td headers="Marker first, N (%)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">180 (46.3 %)</td>
+<td headers="CSR (95% CI)" class="gt_row gt_right" style="text-align: left; border-left-width: 1px; border-left-style: solid; border-left-color: #D3D3D3; border-right-width: 1px; border-right-style: solid; border-right-color: #D3D3D3; border-top-width: 1px; border-top-style: solid; border-top-color: #D3D3D3; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #D3D3D3;">1.16 (0.95 - 1.42)</td>
+<td headers="ASR (95% CI)" class="gt_row gt_right" style="text-align: left;">1.12 (0.92 - 1.37)</td></tr>
   </tbody>
   
   
@@ -909,7 +911,7 @@ text-indent: 25px;
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">plotSequenceRatios</span>(<span class="at">result =</span> result,</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                  <span class="at">onlyaSR =</span> T,</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                  <span class="at">colours =</span> <span class="st">&quot;black&quot;</span>)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 <div id="as-a-diagram" class="section level2">
 <h2>As a diagram</h2>
 <p>Diagrammatically, the work flow using CohortSymmetry resembles the

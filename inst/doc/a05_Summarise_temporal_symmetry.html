@@ -365,7 +365,7 @@ via an example.</p>
 </div>
 <div id="obtaining-temporal-symmetry" class="section level1">
 <h1>Obtaining temporal symmetry</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect) <span class="sc">|&gt;</span> </span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; Rows: 558</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -376,10 +376,10 @@ via an example.</p>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;26&quot;, &quot;277&quot;, &quot;261&quot;, &quot;375&quot;, &quot;162&quot;, &quot;178&quot;, &quot;268&quot;, &quot;17&quot;,…</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;-29&quot;, &quot;40&quot;, &quot;10&quot;, &quot;20&quot;, &quot;69&quot;, &quot;-35&quot;, &quot;89&quot;, &quot;36&quot;, &quot;10…</span></span>
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;9&quot;, NA, NA, NA, NA, NA, NA, &quot;17&quot;, &quot;5&quot;, &quot;13&quot;, NA, &quot;6&quot;…</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;6&quot;, &quot;7&quot;, &quot;6&quot;, &quot;10&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, &quot;5&quot;, NA, &quot;9&quot;, &quot;9&quot;…</span></span>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 <p>The default unit of the difference of two initiations is measured in
@@ -397,7 +397,7 @@ include <code>cohort_definition_id</code> <span class="math inline">\(=
 <code>summariseTemporalSymmetry()</code>, then one could do the
 following:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">cohortId =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                          <span class="at">cohortId =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Rows: 558</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -408,10 +408,10 @@ following:</p>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;-212&quot;, &quot;328&quot;, &quot;45&quot;, &quot;-60&quot;, &quot;55&quot;, &quot;-57&quot;, &quot;558&quot;, &quot;1&quot;, …</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;26&quot;, &quot;277&quot;, &quot;261&quot;, &quot;375&quot;, &quot;162&quot;, &quot;178&quot;, &quot;268&quot;, &quot;17&quot;,…</span></span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
 <span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; NA, NA, &quot;13&quot;, NA, &quot;5&quot;, &quot;5&quot;, NA, &quot;13&quot;, &quot;10&quot;, &quot;7&quot;, &quot;7&quot;,…</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;9&quot;, NA, NA, NA, NA, NA, NA, &quot;17&quot;, &quot;5&quot;, &quot;13&quot;, NA, &quot;6&quot;…</span></span>
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 <p>Of course and once again this does nothing because every entry in
@@ -422,7 +422,7 @@ following:</p>
 <p>Recall the default for the timescale is <code>month</code>, one could
 also change this to either <code>day</code> or <code>year</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                          <span class="at">timescale =</span> <span class="st">&quot;day&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                          <span class="at">timescale =</span> <span class="st">&quot;day&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Rows: 1,350</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -440,7 +440,7 @@ also change this to either <code>day</code> or <code>year</code>.</p>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                          <span class="at">timescale =</span> <span class="st">&quot;year&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                          <span class="at">timescale =</span> <span class="st">&quot;year&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Rows: 94</span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -451,10 +451,10 @@ also change this to either <code>day</code> or <code>year</code>.</p>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;17&quot;, &quot;24&quot;, &quot;26&quot;, &quot;-8&quot;, &quot;-27&quot;, &quot;63&quot;, &quot;4&quot;, &quot;-11&quot;, &quot;31&quot;…</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;17&quot;, &quot;24&quot;, &quot;26&quot;, &quot;-8&quot;, &quot;-27&quot;, &quot;63&quot;, &quot;2&quot;, &quot;-5&quot;, &quot;14&quot;,…</span></span>
 <span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
 <span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;12&quot;, &quot;10&quot;, &quot;7&quot;, &quot;12&quot;, NA, NA, &quot;71&quot;, &quot;18&quot;, &quot;5&quot;, &quot;5&quot;, …</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;12&quot;, &quot;10&quot;, &quot;7&quot;, &quot;12&quot;, NA, NA, &quot;130&quot;, &quot;48&quot;, &quot;31&quot;, &quot;13…</span></span>
 <span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 </div>
@@ -464,7 +464,7 @@ also change this to either <code>day</code> or <code>year</code>.</p>
 which results will be obscured. If 0, all results will be reported and
 the user could do this via:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">summariseTemporalSymmetry</span>(<span class="at">cohort =</span> cdm<span class="sc">$</span>intersect,</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                          <span class="at">minCellCount =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                          <span class="at">minCellCount =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Rows: 558</span></span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Columns: 13</span></span>
@@ -475,10 +475,10 @@ the user could do this via:</p>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; $ strata_name      &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; $ strata_level     &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; $ variable_name    &lt;chr&gt; &quot;temporal_symmetry&quot;, &quot;temporal_symmetry&quot;, &quot;temporal_s…</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;53&quot;, &quot;29&quot;, &quot;-126&quot;, &quot;-82&quot;, &quot;2&quot;, &quot;110&quot;, &quot;51&quot;, &quot;-10&quot;, &quot;…</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; $ variable_level   &lt;chr&gt; &quot;26&quot;, &quot;277&quot;, &quot;261&quot;, &quot;375&quot;, &quot;162&quot;, &quot;178&quot;, &quot;268&quot;, &quot;17&quot;,…</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; $ estimate_name    &lt;chr&gt; &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;, &quot;count&quot;,…</span></span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; $ estimate_type    &lt;chr&gt; &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;, &quot;integer&quot;…</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;5&quot;, &quot;11&quot;, &quot;2&quot;, &quot;3&quot;, &quot;16&quot;, &quot;6&quot;, &quot;4&quot;, &quot;10&quot;, &quot;3&quot;, &quot;1&quot;, …</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; $ estimate_value   &lt;chr&gt; &quot;9&quot;, &quot;2&quot;, &quot;1&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;3&quot;, &quot;17&quot;, &quot;5&quot;, &quot;13&quot;, &quot;…</span></span>
 <span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; $ additional_name  &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span>
 <span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; $ additional_level &lt;chr&gt; &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;, &quot;overall&quot;…</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>CDMConnector<span class="sc">::</span><span class="fu">cdmDisconnect</span>(<span class="at">cdm =</span> cdm)</span></code></pre></div>

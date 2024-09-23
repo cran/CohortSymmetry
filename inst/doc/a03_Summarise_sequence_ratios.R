@@ -32,27 +32,15 @@ cdm <- cdm_from_con(
   write_schema = "main"
 )
 
-# Generate cohorts
-aspirin_code <- CodelistGenerator::getDrugIngredientCodes(
-  cdm = cdm, 
-  name = "aspirin"
-)
-cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
+cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "aspirin",
-  conceptSet = aspirin_code
-)
+  ingredient = "aspirin")
 
-acetaminophen_code <- CodelistGenerator::getDrugIngredientCodes(
-  cdm = cdm, 
-  name = "acetaminophen"
-)
-
-cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
+cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "acetaminophen",
-  conceptSet = acetaminophen_code
-)
+  ingredient = "acetaminophen")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 # Generate a sequence cohort
@@ -66,29 +54,29 @@ cdm <- generateSequenceCohortSet(
 ## ----message = FALSE, warning = FALSE-----------------------------------------
 summariseSequenceRatios(
   cohort = cdm$intersect
-) %>% 
+) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseSequenceRatios(cohort = cdm$intersect,
-                          cohortId = 1) %>% 
+                          cohortId = 1) |> 
   dplyr::glimpse()
 
 ## ----message = FALSE, warning = FALSE-----------------------------------------
 summariseSequenceRatios(
   cohort = cdm$intersect,
-  confidenceInterval = 99) %>% 
+  confidenceInterval = 99) |> 
   dplyr::glimpse()
 
 ## ----message = FALSE, warning = FALSE-----------------------------------------
 summariseSequenceRatios(
   cohort = cdm$intersect,
-  movingAverageRestriction = 600) %>% 
+  movingAverageRestriction = 600) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseSequenceRatios(cohort = cdm$intersect,
-                        minCellCount = 0) %>% 
+                        minCellCount = 0) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------

@@ -374,46 +374,35 @@ DrugUtilisation package to generate two drug cohorts in the cdm object.
 For illustrative purposes, we will carry out SSA on aspirin
 (index_cohort) against acetaminophen (marker_cohort).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(DrugUtilisation)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>aspirin_code <span class="ot">&lt;-</span> CodelistGenerator<span class="sc">::</span><span class="fu">getDrugIngredientCodes</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">cdm =</span> cdm, </span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;aspirin&quot;</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> DrugUtilisation<span class="sc">::</span><span class="fu">generateDrugUtilisationCohortSet</span>(</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">cdm =</span> cdm,</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;aspirin&quot;</span>,</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">conceptSet =</span> aspirin_code</span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> DrugUtilisation<span class="sc">::</span><span class="fu">generateIngredientCohortSet</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">cdm =</span> cdm,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;aspirin&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">ingredient =</span> <span class="st">&quot;aspirin&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> DrugUtilisation<span class="sc">::</span><span class="fu">generateIngredientCohortSet</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">cdm =</span> cdm,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;acetaminophen&quot;</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">ingredient =</span> <span class="st">&quot;acetaminophen&quot;</span>)</span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>acetaminophen_code <span class="ot">&lt;-</span> CodelistGenerator<span class="sc">::</span><span class="fu">getDrugIngredientCodes</span>(</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  <span class="at">cdm =</span> cdm, </span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;acetaminophen&quot;</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>)</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> DrugUtilisation<span class="sc">::</span><span class="fu">generateDrugUtilisationCohortSet</span>(</span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  <span class="at">cdm =</span> cdm,</span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="at">name =</span> <span class="st">&quot;acetaminophen&quot;</span>,</span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  <span class="at">conceptSet =</span> acetaminophen_code</span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>)</span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>cdm<span class="sc">$</span>aspirin <span class="sc">%&gt;%</span> </span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 81, 163, 677, 733, 1036, 1088, 1333, 1353, 1450, …</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1963-09-11, 1979-06-04, 1977-09-11, 1948-07-29, …</span></span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1963-12-10, 1979-06-25, 1977-10-16, 1948-08-26, …</span></span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>cdm<span class="sc">$</span>acetaminophen <span class="sc">%&gt;%</span> </span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
-<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1, 78, 141, 300, 334, 334, 334, 384, 384, 549, 67…</span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1971-01-04, 1968-11-25, 1987-10-31, 2007-08-21, …</span></span>
-<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1971-01-18, 1968-12-16, 1987-11-14, 2007-08-28, …</span></span></code></pre></div>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>cdm<span class="sc">$</span>aspirin <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 148, 245, 263, 449, 895, 1046, 1232, 1338, 1376, …</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1980-09-04, 1917-03-15, 1958-03-31, 1976-03-03, …</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1980-09-18, 1917-03-29, 1958-04-14, 1976-03-17, …</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>cdm<span class="sc">$</span>acetaminophen <span class="sc">|&gt;</span> </span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 35, 64, 165, 224, 235, 326, 408, 693, 715, 719, 7…</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1960-06-20, 1985-02-28, 1974-02-11, 1992-02-19, …</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1960-07-04, 1985-03-14, 1974-02-25, 1992-03-11, …</span></span></code></pre></div>
 </div>
 </div>
 <div id="generate-a-sequence-cohort" class="section level1">
@@ -452,11 +441,11 @@ so:</p>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">indexMarkerGap =</span> <span class="cn">NULL</span>, <span class="co">#default</span></span>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="cn">Inf</span>))</span>
 <span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
 <span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 6, 16, 42, 35, 40, 53, 49, 11, 32, 43, 12, 17, 63…</span></span>
 <span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1965-06-23, 1972-04-10, 1914-07-09, 1960-06-20, …</span></span>
@@ -486,7 +475,7 @@ marker table (<code>markerId</code>). To see the correspondence, one
 could do the following:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">attr</span>(cdm<span class="sc">$</span>intersect, <span class="st">&quot;cohort_set&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; # Source:   table&lt;main.intersect_set&gt; [1 x 10]</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id cohort_name     index_id index_name marker_id marker_name</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt; &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      </span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 1                    1 index_1191_asp…        1 1191_aspi…         1 161_acetam…</span></span>
@@ -541,15 +530,15 @@ Consequently, the cohort range falls into the pre-specified period:</p>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">cohortDateRange =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&quot;1950-01-01&quot;</span>,<span class="st">&quot;1969-01-01&quot;</span>)),</span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="cn">Inf</span>))</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span>  </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span>  </span>
 <span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(<span class="at">min_cohort_start_date =</span> <span class="fu">min</span>(cohort_start_date), </span>
 <span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>            <span class="at">max_cohort_start_date =</span> <span class="fu">max</span>(cohort_start_date),</span>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>            <span class="at">min_cohort_end_date   =</span> <span class="fu">min</span>(cohort_end_date),</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>            <span class="at">max_cohort_end_date   =</span> <span class="fu">max</span>(cohort_end_date)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>            <span class="at">max_cohort_end_date   =</span> <span class="fu">max</span>(cohort_end_date)) <span class="sc">|&gt;</span> </span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; $ min_cohort_start_date &lt;date&gt; 1950-01-02</span></span>
 <span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; $ max_cohort_start_date &lt;date&gt; 1968-09-08</span></span>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; $ min_cohort_end_date   &lt;date&gt; 1950-07-19</span></span>
@@ -580,17 +569,17 @@ the analysis:</p>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">0</span>,</span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="cn">Inf</span>))</span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
 <span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    cdm<span class="sc">$</span>observation_period <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    cdm<span class="sc">$</span>observation_period <span class="sc">|&gt;</span> </span>
 <span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;subject_id&quot;</span> <span class="ot">=</span> <span class="st">&quot;person_id&quot;</span>, <span class="st">&quot;observation_period_start_date&quot;</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">53</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">daysPriorObservation =</span> cohort_start_date <span class="sc">-</span> observation_period_start_date) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">53</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">daysPriorObservation =</span> cohort_start_date <span class="sc">-</span> observation_period_start_date) <span class="sc">|&gt;</span> </span>
 <span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; Columns: 8</span></span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id          &lt;int&gt; 1, 1</span></span>
 <span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt; $ subject_id                    &lt;int&gt; 53, 2</span></span>
 <span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date             &lt;date&gt; 1962-12-13, 1952-07-13</span></span>
@@ -611,16 +600,16 @@ observation before the included event.</p>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">365</span>,</span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="cn">Inf</span>))</span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
 <span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    cdm<span class="sc">$</span>observation_period <span class="sc">%&gt;%</span> </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    cdm<span class="sc">$</span>observation_period <span class="sc">|&gt;</span> </span>
 <span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;subject_id&quot;</span> <span class="ot">=</span> <span class="st">&quot;person_id&quot;</span>, <span class="st">&quot;observation_period_start_date&quot;</span>)</span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">53</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">53</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; Columns: 7</span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id          &lt;int&gt; 1</span></span>
 <span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; $ subject_id                    &lt;int&gt; 2</span></span>
 <span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date             &lt;date&gt; 1952-07-13</span></span>
@@ -653,29 +642,29 @@ implementation below, where we analyse the case of
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">washoutWindow =</span> <span class="dv">0</span>,</span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span>
 <span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>cdm<span class="sc">$</span>aspirin <span class="sc">%&gt;%</span> </span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(subject_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>cdm<span class="sc">$</span>aspirin <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(subject_id) <span class="sc">|&gt;</span> </span>
 <span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(cohort_start_date)</span>
 <span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; # Source:     SQL [6 x 4]</span></span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt; # Database:   DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt; # Database:   DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt; # Groups:     subject_id</span></span>
 <span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; # Ordered by: cohort_start_date</span></span>
 <span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date</span></span>
 <span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt;      &lt;int&gt; &lt;date&gt;            &lt;date&gt;         </span></span>
 <span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 1                    1       1936 1950-05-06        1950-05-20     </span></span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 2                    1       1936 1955-08-04        1955-08-25     </span></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 3                    1       3565 1945-12-24        1946-01-07     </span></span>
-<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 4                    1       3565 1950-01-02        1950-01-30     </span></span>
-<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 5                    1       3565 1957-11-19        1957-12-24     </span></span>
-<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 6                    1       1936 1949-10-08        1949-11-05</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 2                    1       3565 1950-01-02        1950-01-30     </span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 3                    1       3565 1957-11-19        1957-12-24     </span></span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt; 4                    1       1936 1949-10-08        1949-11-05     </span></span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 5                    1       3565 1945-12-24        1946-01-07     </span></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 6                    1       1936 1955-08-04        1955-08-25</span></span>
 <span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a></span>
-<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
-<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1</span></span>
 <span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 1936, 3565</span></span>
 <span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1950-05-06, 1950-01-02</span></span>
@@ -698,13 +687,13 @@ excluded from the analysis:</p>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="at">washoutWindow =</span> <span class="dv">365</span>,</span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span>
 <span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span> </span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(subject_id, cohort_start_date) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span> </span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1936</span>,<span class="dv">3565</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(subject_id, cohort_start_date) <span class="sc">|&gt;</span></span>
 <span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; Ordered by: subject_id, cohort_start_date</span></span>
 <span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1</span></span>
 <span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 3565</span></span>
@@ -753,11 +742,11 @@ in the <strong>intersect</strong> cohort:</p>
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">365</span>,</span>
 <span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">187</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">187</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">combinationWindow =</span> <span class="fu">pmax</span>(index_date, marker_date) <span class="sc">-</span> <span class="fu">pmin</span>(index_date, marker_date))</span>
 <span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [2 x 7]</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date index_date</span></span>
 <span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt;      &lt;int&gt; &lt;date&gt;            &lt;date&gt;          &lt;date&gt;    </span></span>
 <span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; 1                    1         80 1953-02-24        1953-12-31      1953-12-31</span></span>
@@ -775,10 +764,10 @@ two initiations is greater than 365:</p>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">365</span>,</span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="at">combinationWindow =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">Inf</span>))</span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span></span>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">187</span>))</span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [2 x 6]</span></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date index_date</span></span>
 <span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt;      &lt;int&gt; &lt;date&gt;            &lt;date&gt;          &lt;date&gt;    </span></span>
 <span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 1                    1         80 1953-02-24        1953-12-31      1953-12-31</span></span>
@@ -814,30 +803,30 @@ how this affects participant 80 and 754 in the example below:</p>
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">365</span>,</span>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>  <span class="at">indexMarkerGap =</span> <span class="cn">NULL</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">754</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">754</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(</span>
 <span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    <span class="co"># As for both, acetaminophen (marker) is the first event:</span></span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    cdm<span class="sc">$</span>acetaminophen <span class="sc">%&gt;%</span> </span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    cdm<span class="sc">$</span>acetaminophen <span class="sc">|&gt;</span> </span>
 <span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;subject_id&quot;</span>, </span>
 <span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>             <span class="st">&quot;marker_date&quot;</span> <span class="ot">=</span> <span class="st">&quot;cohort_start_date&quot;</span>, </span>
 <span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>             <span class="st">&quot;first_episode_end_date&quot;</span> <span class="ot">=</span> <span class="st">&quot;cohort_end_date&quot;</span>),</span>
 <span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;subject_id&quot;</span>, <span class="st">&quot;marker_date&quot;</span>)</span>
-<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">inner_join</span>(</span>
-<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>    cdm<span class="sc">$</span>aspirin <span class="sc">%&gt;%</span> </span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>    cdm<span class="sc">$</span>aspirin <span class="sc">|&gt;</span> </span>
 <span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;subject_id&quot;</span>, </span>
 <span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a>             <span class="st">&quot;index_date&quot;</span> <span class="ot">=</span> <span class="st">&quot;cohort_start_date&quot;</span>,</span>
 <span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a>             <span class="st">&quot;second_episode_start_date&quot;</span> <span class="ot">=</span> <span class="st">&quot;cohort_start_date&quot;</span>),</span>
 <span id="cb13-25"><a href="#cb13-25" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;subject_id&quot;</span>, <span class="st">&quot;index_date&quot;</span>)</span>
-<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb13-26"><a href="#cb13-26" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb13-27"><a href="#cb13-27" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">indexMarkerGap =</span> second_episode_start_date <span class="sc">-</span> first_episode_end_date)</span>
 <span id="cb13-28"><a href="#cb13-28" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [2 x 9]</span></span>
-<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb13-29"><a href="#cb13-29" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb13-30"><a href="#cb13-30" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date index_date</span></span>
 <span id="cb13-31"><a href="#cb13-31" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt;      &lt;int&gt; &lt;date&gt;            &lt;date&gt;          &lt;date&gt;    </span></span>
-<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a><span class="co">#&gt; 1                    1         80 1953-02-24        1953-12-31      1953-12-31</span></span>
-<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a><span class="co">#&gt; 2                    1        754 1950-08-12        1950-09-20      1950-09-20</span></span>
+<span id="cb13-32"><a href="#cb13-32" tabindex="-1"></a><span class="co">#&gt; 1                    1        754 1950-08-12        1950-09-20      1950-09-20</span></span>
+<span id="cb13-33"><a href="#cb13-33" tabindex="-1"></a><span class="co">#&gt; 2                    1         80 1953-02-24        1953-12-31      1953-12-31</span></span>
 <span id="cb13-34"><a href="#cb13-34" tabindex="-1"></a><span class="co">#&gt; # ℹ 4 more variables: marker_date &lt;date&gt;, first_episode_end_date &lt;date&gt;,</span></span>
 <span id="cb13-35"><a href="#cb13-35" tabindex="-1"></a><span class="co">#&gt; #   second_episode_start_date &lt;date&gt;, indexMarkerGap &lt;dbl&gt;</span></span></code></pre></div>
 <p>By using a <code>indexMarkerGap = 30</code>, participant 80 is
@@ -852,10 +841,10 @@ excluded from the analysis, as is index-marker gap is larger than
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="at">daysPriorObservation =</span> <span class="dv">365</span>,</span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="at">indexMarkerGap =</span> <span class="dv">30</span>)</span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">%&gt;%</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>cdm<span class="sc">$</span>intersect <span class="sc">|&gt;</span></span>
 <span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(subject_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">80</span>,<span class="dv">754</span>)) </span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [1 x 6]</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpA5cYib\file3c807582296c.duckdb]</span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpE3SweR\file5a902245fbd.duckdb]</span></span>
 <span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id subject_id cohort_start_date cohort_end_date index_date</span></span>
 <span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt;      &lt;int&gt; &lt;date&gt;            &lt;date&gt;          &lt;date&gt;    </span></span>
 <span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; 1                    1        754 1950-08-12        1950-09-20      1950-09-20</span></span>
