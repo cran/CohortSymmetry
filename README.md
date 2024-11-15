@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CohortSymmetry <a href="https://oxford-pharmacoepi.github.io/CohortSymmetry/"><img src="man/figures/logo.png" align="right" height="137" alt="CohortSymmetry website" /></a>
+# CohortSymmetry <a href="https://ohdsi.github.io/CohortSymmetry/"><img src="man/figures/logo.png" align="right" height="137" alt="CohortSymmetry website" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -18,7 +18,7 @@ You can install the development version of CohortSymmetry from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("oxford-pharmacoepi/CohortSymmetry")
+devtools::install_github("OHDSI/CohortSymmetry")
 ```
 
 ## Example
@@ -93,7 +93,7 @@ cdm$aspirin_amoxicillin %>%
   dplyr::glimpse()
 #> Rows: ??
 #> Columns: 6
-#> Database: DuckDB v1.0.0 [root@Darwin 23.6.0:R 4.4.1//private/var/folders/pl/k11lm9710hlgl02nvzx4z9wr0000gp/T/RtmpW84FVx/filefe981fd421a8.duckdb]
+#> Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpqOJIm1\file521c7f3a49b3.duckdb]
 #> $ cohort_definition_id <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
 #> $ subject_id           <int> 65, 119, 185, 144, 235, 197, 310, 280, 316, 331, …
 #> $ cohort_start_date    <date> 1968-07-29, 1967-05-28, 1947-04-07, 1978-10-30, …
@@ -126,7 +126,7 @@ res %>% glimpse()
 #> $ variable_level   <chr> "sequence_ratio", "sequence_ratio", "sequence_ratio",…
 #> $ estimate_name    <chr> "point_estimate", "point_estimate", "lower_CI", "uppe…
 #> $ estimate_type    <chr> "numeric", "numeric", "numeric", "numeric", "numeric"…
-#> $ estimate_value   <chr> "1.43589743589744", "1.35265700483092", "0.9573119756…
+#> $ estimate_value   <chr> "1.43589743589744", "1927.66462191247", "0.9573119756…
 #> $ additional_name  <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ additional_level <chr> "overall", "overall", "overall", "overall", "overall"…
 ```

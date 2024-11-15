@@ -68,12 +68,6 @@ summariseSequenceRatios(
   confidenceInterval = 99) |> 
   dplyr::glimpse()
 
-## ----message = FALSE, warning = FALSE-----------------------------------------
-summariseSequenceRatios(
-  cohort = cdm$intersect,
-  movingAverageRestriction = 600) |> 
-  dplyr::glimpse()
-
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseSequenceRatios(cohort = cdm$intersect,
                         minCellCount = 0) |> 
