@@ -35,16 +35,20 @@ plotTemporalSymmetry <- function(result,
                                  xlim = c(-12, 12),
                                  colours = c("blue", "red"),
                                  scales = "free") {
+
+  rlang::check_installed("ggplot2")
+
   # checks
-  checkInputPlotTemporalSymmetry(result = result,
-                                 plotTitle = plotTitle,
-                                 labs = labs,
-                                 xlim = xlim,
-                                 colours = colours,
-                                 scales = scales)
+  result <- omopgenerics::validateResultArgument(result = result)
+  omopgenerics::assertCharacter(plotTitle, length = 1, null = T)
+  omopgenerics::assertCharacter(labs, length = 2)
+  omopgenerics::assertNumeric(xlim, length = 2, unique = T)
+  omopgenerics::assertCharacter(colours, length = 2)
+  scales <- omopgenerics::assertChoice(scales,
+                                       choices = c("free", "fixed"))
 
   plot_data <- result |>
-    visOmopResults::splitNameLevel() |>
+    visOmopResults::splitGroup() |>
     dplyr::select(.data$index_name, .data$marker_name, .data$variable_name, .data$variable_level, .data$estimate_name, .data$estimate_value, .data$additional_level, .data$additional_name) |>
     dplyr::group_by(.data$estimate_name) |>
     dplyr::mutate(row = dplyr::row_number()) |>

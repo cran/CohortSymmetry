@@ -18,7 +18,7 @@ library(duckdb)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- emptyCdmReference(cdmName = "mock") |>
-  mockPerson(nPerson = 1000) |>
+  mockPerson(nPerson = 100) |>
   mockObservationPeriod() |>
   mockCohort(
     name = "index_cohort",
@@ -36,13 +36,6 @@ cdm <- emptyCdmReference(cdmName = "mock") |>
 con <- dbConnect(duckdb::duckdb())
 cdm <- copyCdmTo(con = con, cdm = cdm, schema = "main", overwrite = T)
 
-cdm$index_cohort |> 
-  dplyr::glimpse()
-
-cdm$marker_cohort |> 
-  dplyr::glimpse()
-
-
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 cdm <- generateSequenceCohortSet(
   cdm = cdm,
@@ -57,24 +50,24 @@ cdm$intersect |>
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-result <- summariseTemporalSymmetry(cohort = cdm$intersect, 
-                                    timescale = "year")
-result |> dplyr::glimpse()
-
-plotTemporalSymmetry(result = result)
+temporal_symmetry <- summariseTemporalSymmetry(
+  cohort = cdm$intersect, 
+  timescale = "year")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-result <- summariseSequenceRatios(cohort = cdm$intersect)
-
-result |> dplyr::glimpse()
+tableTemporalSymmetry(result = temporal_symmetry)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-tableSequenceRatios(result)
+plotTemporalSymmetry(result = temporal_symmetry)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-plotSequenceRatios(result = result,
-                  onlyaSR = T,
-                  colours = "black")
+sequence_ratio <- summariseSequenceRatios(cohort = cdm$intersect)
+
+## ----message= FALSE, warning=FALSE--------------------------------------------
+tableSequenceRatios(result = sequence_ratio)
+
+## ----message= FALSE, warning=FALSE--------------------------------------------
+plotSequenceRatios(result = sequence_ratio)
 
 ## ----echo=FALSE, message=FALSE, out.width="100%", warning=FALSE---------------
 library(here)

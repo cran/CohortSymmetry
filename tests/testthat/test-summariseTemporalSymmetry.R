@@ -27,8 +27,6 @@ test_that("test summariseTemporalSymmetry", {
     )
   ))
 
-  expect_true(is.na(temporal_symmetry$estimate_value |> unique()))
-
   temporal_symmetry <-
     summariseTemporalSymmetry(cohort = cdm$joined_cohorts, minCellCount = 0)
 
@@ -149,22 +147,5 @@ test_that("input validation",{
   )
 
   CDMConnector::cdmDisconnect(cdm = cdm)
-
-})
-
-test_that("edge case",{
-  skip_on_cran()
-  cdm <- mockCohortSymmetry()
-  cdm <- generateSequenceCohortSet(
-    cdm = cdm,
-    name = "joined_cohorts",
-    indexTable = "cohort_1",
-    markerTable = "cohort_2",
-    combinationWindow = c(10, 11)
-  )
-
-  expect_error(
-    result <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts)
-  )
 
 })

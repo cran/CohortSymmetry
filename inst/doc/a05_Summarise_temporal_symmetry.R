@@ -71,11 +71,6 @@ summariseTemporalSymmetry(cohort = cdm$intersect,
                           timescale = "year") |> 
   dplyr::glimpse()
 
-## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseTemporalSymmetry(cohort = cdm$intersect,
-                          minCellCount = 0) |> 
-  dplyr::glimpse()
-
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  CDMConnector::cdmDisconnect(cdm = cdm)
 

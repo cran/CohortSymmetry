@@ -55,26 +55,10 @@ cdm <- generateSequenceCohortSet(
 temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$intersect)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
+tableTemporalSymmetry(result = temporal_symmetry)
+
+## ----message= FALSE, warning=FALSE--------------------------------------------
 plotTemporalSymmetry(result = temporal_symmetry)
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-temporal_symmetry_day <- summariseTemporalSymmetry(cohort = cdm$intersect, timescale = "day")
-
-plotTemporalSymmetry(result = temporal_symmetry_day,
-                     labs = c("Time (days)", "Individuals (N)"),
-                     xlim = c(-365, 365))
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-plotTemporalSymmetry(result = temporal_symmetry,
-                     plotTitle = "Plot Temporal Symmetry")
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-plotTemporalSymmetry(result = temporal_symmetry,
-                     colours = c("orange", "purple"))
-
-## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-#  plotTemporalSymmetry(result = temporal_symmetry,
-#                       scales = "fixed")
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  CDMConnector::cdmDisconnect(cdm = cdm)

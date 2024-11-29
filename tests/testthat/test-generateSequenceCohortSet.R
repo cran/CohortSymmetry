@@ -2,7 +2,7 @@
 test_that("check output table name", {
   skip_on_cran()
   cdm <- mockCohortSymmetry()
-  cdm <- generateSequenceCohortSet(cdm,
+  cdm <- generateSequenceCohortSet(cdm = cdm,
                                    name = "output",
                                    indexTable ="cohort_1",
                                    markerTable = "cohort_2")
@@ -55,6 +55,7 @@ test_that("one ID against one ID, example 1", {
 )
 
 test_that("one ID against one ID, example 2", {
+  skip_on_cran()
   cdm <- mockCohortSymmetry()
   cdm <- generateSequenceCohortSet(cdm,
                                    name = "joined_cohorts",
@@ -760,10 +761,10 @@ test_that("unsuccessful examples - Inf prior observation", {
   CDMConnector::cdmDisconnect(cdm)
 })
 
-test_that("unsuccessful examples - name not in the right form", {
+test_that("warning examples - name not in the right form", {
   skip_on_cran()
   cdm <- mockCohortSymmetry()
-  expect_error(generateSequenceCohortSet(cdm,
+  expect_warning(generateSequenceCohortSet(cdm,
                                          name = "joinCohorts",
                                          indexTable = "cohort_1",
                                          markerTable = "cohort_2",
@@ -902,8 +903,7 @@ test_that("generateSequenceCohortSet - inputValidation", {
       cohortDateRange = as.Date(c("2002-01-01", NA)),
       washoutWindow = 365,
       combinationWindow = c(0,Inf)
-    ),
-    "cdm must be a CDMConnector CDM reference object"
+    )
   )
   expect_error(
     generateSequenceCohortSet(

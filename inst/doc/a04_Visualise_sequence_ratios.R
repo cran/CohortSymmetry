@@ -59,18 +59,6 @@ tableSequenceRatios(result = result)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 tableSequenceRatios(result = result,
-                    studyPopulation = FALSE)
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-tableSequenceRatios(result = result,
-                    cdmName = FALSE)
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-tableSequenceRatios(result = result,
-                    .options = list(title = "Title"))
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-tableSequenceRatios(result = result,
                     type = "flextable")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
@@ -78,35 +66,17 @@ tableSequenceRatios(result = result,
                     type = "tibble")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-tableSequenceRatios(result = result,
-                    type = "flextable",
-                    style = NULL)
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
 plotSequenceRatios(result = result)
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 plotSequenceRatios(result = result,
-                   onlyaSR = T,
+                   onlyASR = T,
                    colours = "black")
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 plotSequenceRatios(result = result,
-                   onlyaSR = T,
+                   onlyASR = T,
                    colours = "red")
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-plotSequenceRatios(result = result,
-                   onlyaSR = T,
-                   plotTitle = "Adjusted Sequence Ratio",
-                   colour = "black")
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-plotSequenceRatios(result = result,
-                   onlyaSR = T,
-                   plotTitle = "Adjusted Sequence Ratio",
-                   colour = "black",
-                   labs = c("sequence ratios", "analysis"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  CDMConnector::cdmDisconnect(cdm = cdm)

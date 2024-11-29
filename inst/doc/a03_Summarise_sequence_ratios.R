@@ -57,22 +57,6 @@ summariseSequenceRatios(
 ) |> 
   dplyr::glimpse()
 
-## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseSequenceRatios(cohort = cdm$intersect,
-                          cohortId = 1) |> 
-  dplyr::glimpse()
-
-## ----message = FALSE, warning = FALSE-----------------------------------------
-summariseSequenceRatios(
-  cohort = cdm$intersect,
-  confidenceInterval = 99) |> 
-  dplyr::glimpse()
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseSequenceRatios(cohort = cdm$intersect,
-                        minCellCount = 0) |> 
-  dplyr::glimpse()
-
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
 #  CDMConnector::cdmDisconnect(cdm = cdm)
 

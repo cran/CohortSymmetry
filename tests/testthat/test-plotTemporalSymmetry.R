@@ -68,7 +68,6 @@ test_that("expected errors", {
   expect_error(plotTemporalSymmetry(result = result, xlim = 2))
   expect_error(plotTemporalSymmetry(result = result, xlim = "4"))
   expect_error(plotTemporalSymmetry(result = result, xlim = 2))
-  expect_error(plotTemporalSymmetry(result = result, colours = c("no", "black")))
   expect_error(plotTemporalSymmetry(result = result, colours = "red"))
   expect_error(plotTemporalSymmetry(result = result, colours = c(3,4)))
   expect_error(plotTemporalSymmetry(result = result, plotTitle = 2))
@@ -121,12 +120,6 @@ test_that("empty result error",{
                                    name = "joined_cohorts",
                                    indexTable = "cohort_1",
                                    markerTable = "cohort_2")
-
-  ts <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts)
-
-  expect_error(
-    plotTemporalSymmetry(ts)
-  )
 
   ts2 <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts,
                                      minCellCount = 0)

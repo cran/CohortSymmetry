@@ -83,31 +83,6 @@ The function `tableSequenceRatios` inputs the result from `summariseSequenceRati
 tableSequenceRatios(result = result)
 ```
 
-## Arguments used to suppress columns
-
-By default, it has many columns such as Index (name), Marker (name), Study population, CSR and ASR, some of these columns could be suppressed with relevant parameters. For example if one wants to not display study population, one could do the following: 
-
-```{r message= FALSE, warning=FALSE}
-tableSequenceRatios(result = result,
-                    studyPopulation = FALSE)
-```
-
-Or suppress `cdmName` like so 
-
-```{r message= FALSE, warning=FALSE}
-tableSequenceRatios(result = result,
-                    cdmName = FALSE)
-```
-
-There are also `.options` argument that one may wish to specify. For example, the user can specify a title:
-
-```{r message= FALSE, warning=FALSE}
-tableSequenceRatios(result = result,
-                    .options = list(title = "Title"))
-```
-
-Similarly, `subtitle` and `caption` can also be defined this way.
-
 ## Modify `type`
 
 Instead of a gt table, the user may also want to put the sequence ratio results in a flex table format (the rest of the arguments that we saw for a gt table also applies here):
@@ -124,14 +99,6 @@ tableSequenceRatios(result = result,
                     type = "tibble")
 ```
 
-One may also wish to change the style of the output, see the R package visOmopResults for more information on how to define a style. The default style inherits from visOmopResults, however the user may set it to NULL for the gt/flextable default styling.
-
-```{r message= FALSE, warning=FALSE}
-tableSequenceRatios(result = result,
-                    type = "flextable",
-                    style = NULL)
-```
-
 # Plot output of the sequence ratio results
 
 Similarly, we also have `plotSequenceRatios()` to visualise the results.
@@ -142,11 +109,11 @@ plotSequenceRatios(result = result)
 
 By default, it plots both the adjusted sequence ratios (and its CIs) and crude sequence ratios (and its CIs). One may wish to only plot adjusted one like so (note since only adjusted is plotted, only one colour needs to be specified):
 
-## Modify `onlyaSR` and `colours`
+## Modify `onlyASR` and `colours`
 
 ```{r message= FALSE, warning=FALSE}
 plotSequenceRatios(result = result,
-                   onlyaSR = T,
+                   onlyASR = T,
                    colours = "black")
 ```
 
@@ -154,31 +121,8 @@ One could change the colour like so:
 
 ```{r message= FALSE, warning=FALSE}
 plotSequenceRatios(result = result,
-                   onlyaSR = T,
+                   onlyASR = T,
                    colours = "red")
-```
-
-## Modify `plotTitle`
-
-One could set the title like so:
-
-```{r message= FALSE, warning=FALSE}
-plotSequenceRatios(result = result,
-                   onlyaSR = T,
-                   plotTitle = "Adjusted Sequence Ratio",
-                   colour = "black")
-```
-
-## Modify `labs`
-
-One could also change the $x$ and $y$ labels like so:
-
-```{r message= FALSE, warning=FALSE}
-plotSequenceRatios(result = result,
-                   onlyaSR = T,
-                   plotTitle = "Adjusted Sequence Ratio",
-                   colour = "black",
-                   labs = c("sequence ratios", "analysis"))
 ```
 
 ```{r message= FALSE, warning=FALSE, eval=FALSE}
