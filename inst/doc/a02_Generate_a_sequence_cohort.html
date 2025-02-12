@@ -357,11 +357,11 @@ examples.</p>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(duckdb)</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>db <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbConnect</span>(duckdb<span class="sc">::</span><span class="fu">duckdb</span>(), </span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>                     <span class="at">dbdir =</span> CDMConnector<span class="sc">::</span><span class="fu">eunomia_dir</span>())</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">cdm_from_con</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>                     <span class="at">dbdir =</span> CDMConnector<span class="sc">::</span><span class="fu">eunomiaDir</span>())</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">cdmFromCon</span>(</span>
 <span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="at">con =</span> db,</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="at">cdm_schema =</span> <span class="st">&quot;main&quot;</span>,</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="at">write_schema =</span> <span class="st">&quot;main&quot;</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="at">cdmSchema =</span> <span class="st">&quot;main&quot;</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="at">writeSchema =</span> <span class="st">&quot;main&quot;</span></span>
 <span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="instantiate-two-cohorts-in-the-cdm-reference" class="section level2">
@@ -425,13 +425,13 @@ so:</p>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">glimpse</span>()</span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; Rows: ??</span></span>
 <span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Columns: 6</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpERdOiG\filebd467dc7761.duckdb]</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; Database: DuckDB v1.1.3 [xihangc@Windows 10 x64:R 4.2.1/C:\Users\xihangc\AppData\Local\Temp\RtmpaEEdoO\file330421347165.duckdb]</span></span>
 <span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; $ cohort_definition_id &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 6, 16, 42, 35, 40, 53, 49, 11, 32, 43, 12, 17, 63…</span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1965-06-23, 1972-04-10, 1914-07-09, 1960-06-20, …</span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1969-12-20, 1974-06-11, 1937-09-07, 1993-04-28, …</span></span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; $ index_date           &lt;date&gt; 1965-06-23, 1972-04-10, 1914-07-09, 1993-04-28, …</span></span>
-<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; $ marker_date          &lt;date&gt; 1969-12-20, 1974-06-11, 1937-09-07, 1960-06-20, …</span></span></code></pre></div>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; $ subject_id           &lt;int&gt; 42, 35, 2, 49, 11, 43, 12, 7, 17, 5, 30, 3, 57, 1…</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt; $ cohort_start_date    &lt;date&gt; 1914-07-09, 1960-06-20, 1920-07-01, 1976-11-13, …</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt; $ cohort_end_date      &lt;date&gt; 1937-09-07, 1993-04-28, 1931-09-03, 1978-03-10, …</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt; $ index_date           &lt;date&gt; 1914-07-09, 1993-04-28, 1920-07-01, 1976-11-13, …</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt; $ marker_date          &lt;date&gt; 1937-09-07, 1960-06-20, 1931-09-03, 1978-03-10, …</span></span></code></pre></div>
 <div id="important-observations" class="section level3">
 <h3>Important Observations</h3>
 <p>See that the generated table has the format of an OMOP CDM cohort,
@@ -454,11 +454,11 @@ with the <code>cohort_definition_id}</code> of the index table
 marker table (<code>markerId</code>). To see the correspondence, one
 could do the following:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">attr</span>(cdm<span class="sc">$</span>intersect, <span class="st">&quot;cohort_set&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; # Source:   table&lt;main.intersect_set&gt; [1 x 13]</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v0.10.1 [xihangc@Windows 10 x64:R 4.3.1/C:\Users\xihangc\AppData\Local\Temp\RtmpERdOiG\filebd467dc7761.duckdb]</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; # Source:   table&lt;main.intersect_set&gt; [?? x 13]</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; # Database: DuckDB v1.1.3 [xihangc@Windows 10 x64:R 4.2.1/C:\Users\xihangc\AppData\Local\Temp\RtmpaEEdoO\file330421347165.duckdb]</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt;   cohort_definition_id cohort_name     index_id index_name marker_id marker_name</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt;                  &lt;int&gt; &lt;chr&gt;              &lt;int&gt; &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      </span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 1                    1 index_1191_asp…        1 1191_aspi…         1 161_acetam…</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; 1                    1 index_aspirin_…        1 aspirin            1 acetaminop…</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; # ℹ 7 more variables: cohort_date_range &lt;chr&gt;, days_prior_observation &lt;chr&gt;,</span></span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; #   washout_window &lt;chr&gt;, index_marker_gap &lt;chr&gt;, combination_window &lt;chr&gt;,</span></span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; #   moving_average_restriction &lt;chr&gt;, nsr &lt;dbl&gt;</span></span></code></pre></div>

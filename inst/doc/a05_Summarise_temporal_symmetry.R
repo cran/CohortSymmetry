@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 ## ----include = FALSE----------------------------------------------------------
 if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
 if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
-if (!CDMConnector::eunomia_is_available()) CDMConnector::downloadEunomiaData()
+if (!CDMConnector::eunomiaIsAvailable()) CDMConnector::downloadEunomiaData()
 
 ## ----message= FALSE, warning=FALSE, include=FALSE-----------------------------
 # Load libraries
@@ -25,11 +25,11 @@ library(DrugUtilisation)
 
 # Connect to the database
 db <- DBI::dbConnect(duckdb::duckdb(), 
-                     dbdir = CDMConnector::eunomia_dir())
-cdm <- cdm_from_con(
+                     dbdir = CDMConnector::eunomiaDir())
+cdm <- cdmFromCon(
   con = db,
-  cdm_schema = "main",
-  write_schema = "main"
+  cdmSchema = "main",
+  writeSchema = "main"
 )
 
 # Generate cohorts
@@ -72,5 +72,5 @@ summariseTemporalSymmetry(cohort = cdm$intersect,
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-#  CDMConnector::cdmDisconnect(cdm = cdm)
+# CDMConnector::cdmDisconnect(cdm = cdm)
 
