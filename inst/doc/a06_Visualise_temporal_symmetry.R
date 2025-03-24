@@ -62,5 +62,5 @@ tableTemporalSymmetry(result = temporal_symmetry)
 plotTemporalSymmetry(result = temporal_symmetry)
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# CDMConnector::cdmDisconnect(cdm = cdm)
+#  CDMConnector::cdmDisconnect(cdm = cdm)
 

@@ -23,7 +23,7 @@
 #'                                  indexTable = "cohort_1",
 #'                                  markerTable = "cohort_2",
 #'                                  name = "joined_cohort")
-#' res <- summariseTemporalSymmetry(cohort = cdm$joined_cohort, minCellCount = 0)
+#' res <- summariseTemporalSymmetry(cohort = cdm$joined_cohort)
 #' gtResult <- tableTemporalSymmetry(result = res)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -34,6 +34,7 @@ tableTemporalSymmetry <- function(result,
                                   type = "gt",
                                   hide = "variable_name"){
 
+  rlang::check_installed("visOmopResults")
   rlang::check_installed("flextable")
   rlang::check_installed("gt")
 
@@ -42,7 +43,7 @@ tableTemporalSymmetry <- function(result,
 
   # check settings
   result <- result |>
-    visOmopResults::filterSettings(
+    omopgenerics::filterSettings(
       .data$result_type == "temporal_symmetry"
     )
 

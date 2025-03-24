@@ -1,4 +1,5 @@
 test_that("plot working", {
+  skip_if_not_installed("omock")
   cdm <- omock::mockCdmReference(cdmName = "mock") |>
     omock::mockPerson(nPerson = 1000) |>
     omock::mockObservationPeriod() |>
@@ -121,8 +122,7 @@ test_that("empty result error",{
                                    indexTable = "cohort_1",
                                    markerTable = "cohort_2")
 
-  ts2 <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts,
-                                     minCellCount = 0)
+  ts2 <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts)
 
   expect_no_error(
     plotTemporalSymmetry(ts2)

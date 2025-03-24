@@ -23,8 +23,7 @@
 #'                                  indexTable = "cohort_1",
 #'                                  markerTable = "cohort_2",
 #'                                  name = "joined_cohort")
-#' sequence_ratio <- summariseSequenceRatios(cohort = cdm$joined_cohort,
-#'                                           minCellCount = 0)
+#' sequence_ratio <- summariseSequenceRatios(cohort = cdm$joined_cohort)
 #' plotSequenceRatios(result = sequence_ratio)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
@@ -36,6 +35,7 @@ plotSequenceRatios <- function(result,
                                facet = NULL
                                ){
 
+  rlang::check_installed("visOmopResults")
   rlang::check_installed("ggplot2")
 
   # validate checks

@@ -72,5 +72,5 @@ summariseTemporalSymmetry(cohort = cdm$intersect,
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# CDMConnector::cdmDisconnect(cdm = cdm)
+#  CDMConnector::cdmDisconnect(cdm = cdm)
 

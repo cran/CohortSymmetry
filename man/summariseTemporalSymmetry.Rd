@@ -4,12 +4,7 @@
 \alias{summariseTemporalSymmetry}
 \title{Summarise temporal symmetry}
 \usage{
-summariseTemporalSymmetry(
-  cohort,
-  cohortId = NULL,
-  timescale = "month",
-  minCellCount = 5
-)
+summariseTemporalSymmetry(cohort, cohortId = NULL, timescale = "month")
 }
 \arguments{
 \item{cohort}{A cohort table in the cdm.}
@@ -17,9 +12,6 @@ summariseTemporalSymmetry(
 \item{cohortId}{The Ids in the cohort that are to be included in the analyses.}
 
 \item{timescale}{Timescale for the x axis of the plot (month, day, year).}
-
-\item{minCellCount}{The minimum number of events to reported, below which
-results will be obscured. If 0, all results will be reported.}
 }
 \value{
 An aggregated table with difference in time (marker - index) and the relevant
@@ -37,7 +29,7 @@ cdm <- generateSequenceCohortSet(cdm = cdm,
                                  name = "joined_cohorts",
                                  indexTable = "cohort_1",
                                  markerTable = "cohort_2")
-temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts, minCellCount = 0)
+temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts)
 CDMConnector::cdmDisconnect(cdm)
 }
 
