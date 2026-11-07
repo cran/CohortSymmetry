@@ -11,6 +11,7 @@
 #' See visOmopResults package for more information on how to use this parameter.
 #' @param type The desired format of the output table.
 #' @param hide Columns to drop from the output table.
+#' @param style Style used for the table.
 #'
 #' @return A formatted version of the temporal_symmetry object.
 #'
@@ -19,9 +20,9 @@
 #' \donttest{
 #' library(CohortSymmetry)
 #' cdm <- mockCohortSymmetry()
-#' cdm <- generateSequenceCohortSet(cdm = cdm,
-#'                                  indexTable = "cohort_1",
-#'                                  markerTable = "cohort_2",
+#' cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+#'                                  indexCohortTable = "cohort_1",
+#'                                  markerCohortTable = "cohort_2",
 #'                                  name = "joined_cohort")
 #' res <- summariseTemporalSymmetry(cohort = cdm$joined_cohort)
 #' gtResult <- tableTemporalSymmetry(result = res)
@@ -32,11 +33,19 @@ tableTemporalSymmetry <- function(result,
                                   header = "variable_level",
                                   groupColumn = c("cdm_name", "index_name"),
                                   type = "gt",
+                                  style = "default",
                                   hide = "variable_name"){
 
   rlang::check_installed("visOmopResults")
-  rlang::check_installed("flextable")
-  rlang::check_installed("gt")
+
+  if (type == "flextable") {
+    rlang::check_installed("flextable")
+  }
+
+  if (type == "gt") {
+    rlang::check_installed("gt")
+  }
+
 
   # validate checks
   result <- omopgenerics::validateResultArgument(result)
@@ -56,7 +65,7 @@ tableTemporalSymmetry <- function(result,
 
   result_visualised <- result |>
     omopgenerics::addSettings() |>
-    dplyr::mutate(estimate_name = paste0(.data$timescale, "ly_count"),
+    dplyr::mutate(estimate_name = paste0(.data$days, "_days_ly_count"),
                   variable_level = as.integer(.data$variable_level)) |>
     dplyr::group_by(.data$group_level) |>
     dplyr::arrange(.data$variable_level) |>
@@ -75,6 +84,9 @@ tableTemporalSymmetry <- function(result,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = hide
+    hide = hide,
+    style = style
   )
+
+  return(tab)
 }

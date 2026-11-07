@@ -9,6 +9,7 @@ tableTemporalSymmetry(
   header = "variable_level",
   groupColumn = c("cdm_name", "index_name"),
   type = "gt",
+  style = "default",
   hide = "variable_name"
 )
 }
@@ -23,6 +24,8 @@ See visOmopResults package for more information on how to use this parameter.}
 
 \item{type}{The desired format of the output table.}
 
+\item{style}{Style used for the table.}
+
 \item{hide}{Columns to drop from the output table.}
 }
 \value{
@@ -36,9 +39,9 @@ output.
 \donttest{
 library(CohortSymmetry)
 cdm <- mockCohortSymmetry()
-cdm <- generateSequenceCohortSet(cdm = cdm,
-                                 indexTable = "cohort_1",
-                                 markerTable = "cohort_2",
+cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+                                 indexCohortTable = "cohort_1",
+                                 markerCohortTable = "cohort_2",
                                  name = "joined_cohort")
 res <- summariseTemporalSymmetry(cohort = cdm$joined_cohort)
 gtResult <- tableTemporalSymmetry(result = res)

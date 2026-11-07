@@ -1,15 +1,26 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# CohortSymmetry <a href="https://ohdsi.github.io/CohortSymmetry/"><img src="man/figures/logo.png" align="right" height="137" alt="CohortSymmetry website" /></a>
+# CohortSymmetry <a href="https://ohdsi.github.io/CohortSymmetry/"><img src="man/figures/logo.png" alt="CohortSymmetry website" align="right" height="137"/></a>
 
 <!-- badges: start -->
+
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/CohortSymmetry)](https://CRAN.R-project.org/package=CohortSymmetry)
+[![Codecov test
+coverage](https://codecov.io/gh/OHDSI/CohortSymmetry/graph/badge.svg)](https://app.codecov.io/gh/OHDSI/CohortSymmetry)
+[![R-CMD-check](https://github.com/OHDSI/CohortSymmetry/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/OHDSI/CohortSymmetry/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 The goal of CohortSymmetry is to carry out the necessary calculations
 for Sequence Symmetry Analysis (SSA). It is highly recommended that this
-method is tested beforehand against well-known positive and negative
-controls. Such controls could be found using Pratt et al (2015).
+method is tested beforehand against several positive and negative
+controls on a users specific database. Examples of controls could be
+found from [Pratt et al (2015)](https://doi.org/10.1002/pds.3780) and
+the literature.
 
 ## Installation
 
@@ -17,33 +28,31 @@ You can install the development version of CohortSymmetry from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("OHDSI/CohortSymmetry")
+# install.packages("pak")
+pak::pak("OHDSI/CohortSymmetry")
 ```
 
 ## Example
 
 ### Create a reference to data in the OMOP CDM format
 
-The CohortSymmetry package is designed to work with data in the OMOP CDM
-(Common Data Model) format, so our first step is to create a reference
-to the data using the `CDMConnector` package.
+The CohortSymmetry package is designed to work with data mapped to OMOP
+CDM, so the first step is to create a mock database using the [omock
+package](https://ohdsi.github.io/omock/). We will use the Eunomia
+dataset within omock for the subsequent examples. There are other
+synthetic datasets within omock that users can also use to get familiar
+with CohortSymmetry before applying to their own database. See the
+[omock vignette](https://ohdsi.github.io/omock/) for more details.
 
-As an example, we will be using Eunomia data set.
+As an example, we will be using Eunomia GIBleed data set.
 
 ``` r
-library(CDMConnector)
 library(dplyr)
 library(DBI)
-library(duckdb)
- 
-db <- DBI::dbConnect(duckdb::duckdb(), 
-                     dbdir = CDMConnector::eunomiaDir())
-cdm <- cdmFromCon(
-  con = db,
-  cdmSchema = "main",
-  writeSchema = "main"
-)
+library(omock)
+library(CohortSymmetry)
+
+cdm <- mockCdmFromDataset(datasetName = "GiBleed")
 ```
 
 ### Step 0: Instantiate two cohorts in the cdm reference
@@ -52,13 +61,75 @@ This will be entirely user’s choice on how to generate such cohorts.
 Minimally, this package requires two cohort tables in the cdm reference,
 namely the index_cohort and the marker_cohort.
 
-If one wants to generate two drugs cohorts in cdm, DrugUtilisation is
-recommended. For merely illustration purposes, we will carry out PSSA on
-aspirin (index_cohort) against amoxicillin (marker_cohort)
+If one wants to generate two drugs cohorts in cdm, we recommend using
+[CohortConstructor R
+package](https://ohdsi.github.io/CohortConstructor/) however the
+[DrugUtilisation R
+package](https://darwin-eu.github.io/DrugUtilisation/) can also be used.
+However a user will need to specify the gap eras for each of the cohorts
+i.e. a gap era set to 30 would collapse episodes together if they are
+within 30 days of each other for example please see the individual
+packages on how to implement this if required.
+
+For merely illustration purposes, we will carry out SSA on aspirin
+(index_cohort) against amoxicillin (marker_cohort). Multiple markers can
+be instantiated in the marker cohort and each one will be tested against
+the index cohort.
+
+Using CohortConstructor R package (recommended):
+
+``` r
+library(dplyr)
+library(CodelistGenerator)
+#> Registered S3 method overwritten by 'CodelistGenerator':
+#>   method            from        
+#>   print.code_search omopgenerics
+library(CohortConstructor)
+
+aspirin_codelist <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm,
+  name = "aspirin",
+  nameStyle = "{concept_name}"
+)
+
+cdm[["aspirin"]] <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = aspirin_codelist,
+  exit = "event_end_date",
+  name = "aspirin")
+#> ℹ Subsetting table drug_exposure using 2 concepts with domain: drug.
+#> ℹ Combining tables.
+#> ℹ Creating cohort attributes.
+#> ℹ Applying cohort requirements.
+#> ℹ Merging overlapping records.
+#> ✔ Cohort aspirin created.
+
+
+amoxicillin_codelist <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm,
+  name = "amoxicillin",
+  nameStyle = "{concept_name}"
+)
+
+cdm[["amoxicillin"]] <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = amoxicillin_codelist,
+  exit = "event_end_date",
+  name = "amoxicillin")
+#> ℹ Subsetting table drug_exposure using 4 concepts with domain: drug.
+#> ℹ Combining tables.
+#> ℹ Creating cohort attributes.
+#> ℹ Applying cohort requirements.
+#> ℹ Merging overlapping records.
+#> ✔ Cohort amoxicillin created.
+```
+
+Using the drug utilisation package:
 
 ``` r
 library(dplyr)
 library(DrugUtilisation)
+
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm, 
   name = "aspirin",
@@ -78,63 +149,61 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 #> ℹ Collapsing records with gapEra = 1 days.
 ```
 
-### Step 1: generateSequenceCohortSet
+### Step 1: sequenceCohort
 
 In order to initiate the calculations, the two cohorts tables need to be
-intersected using `generateSequenceCohortSet()`. This process will
-output all the individuals who appeared on both tables according to a
-user-specified parameters. This includes `timeGap`, `washoutWindow`,
-`indexMarkerGap` and `daysPriorObservation`. Details on these parameters
-could be found on the vignette.
+intersected using `sequenceCohort()`. This process will output all the
+individuals who appeared on both tables according to a user-specified
+parameters. This includes `cohortDateRange`, `combinationWindow`,
+`indexMarkerWashout`, `indexMarkerGap` and `sequencePriorObservation`.
+More details on these parameters are found on the vignette.
 
 ``` r
 library(CohortSymmetry)
  
-cdm <- generateSequenceCohortSet(
+cdm$aspirin_amoxicillin <- sequenceCohort(
   cdm = cdm,
-  indexTable = "aspirin",
-  markerTable = "amoxicillin",
+  indexCohortTable = "aspirin",
+  markerCohortTable = "amoxicillin",
   name = "aspirin_amoxicillin"
 )
 
 cdm$aspirin_amoxicillin %>% 
   dplyr::glimpse()
-#> Rows: ??
+#> Rows: 72
 #> Columns: 6
-#> Database: DuckDB v1.1.3 [xihangc@Windows 10 x64:R 4.2.1/C:\Users\xihangc\AppData\Local\Temp\Rtmpy2oj4K\file791c79b03ba9.duckdb]
 #> $ cohort_definition_id <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-#> $ subject_id           <int> 563, 1669, 2141, 3145, 3440, 4052, 4776, 331, 161…
-#> $ cohort_start_date    <date> 1964-06-11, 1959-12-29, 1950-06-23, 1974-11-14, …
-#> $ cohort_end_date      <date> 1964-08-16, 1960-02-05, 1950-11-14, 1975-04-06, …
-#> $ index_date           <date> 1964-06-11, 1959-12-29, 1950-11-14, 1975-04-06, …
-#> $ marker_date          <date> 1964-08-16, 1960-02-05, 1950-06-23, 1974-11-14, …
+#> $ subject_id           <int> 1536, 1340, 2801, 4121, 4867, 1054, 2813, 331, 34…
+#> $ cohort_start_date    <date> 1912-08-25, 1912-10-22, 1923-06-17, 1925-09-28, …
+#> $ cohort_end_date      <date> 1913-01-27, 1912-12-29, 1923-11-09, 1925-11-18, …
+#> $ index_date           <date> 1912-08-25, 1912-10-22, 1923-11-09, 1925-11-18, …
+#> $ marker_date          <date> 1913-01-27, 1912-12-29, 1923-06-17, 1925-09-28, …
 ```
 
 ### Step 2: summariseSequenceRatios
 
 To get the sequence ratios, we would need the output of the
-generateSequenceCohortSet() function to be fed into
-`summariseSequenceRatios()` The output of this process contains
-cSR(crude sequence ratio), aSR(adjusted sequence ratio) and confidence
-intervals.
+sequenceCohort() function to be fed into `summariseSequenceRatios()` The
+output of this process contains CSR(crude sequence ratio), ASR(adjusted
+sequence ratio) and confidence intervals.
 
 ``` r
 res <- summariseSequenceRatios(cohort = cdm$aspirin_amoxicillin)
  
 res %>% glimpse()
-#> Rows: 10
+#> Rows: 11
 #> Columns: 13
-#> $ result_id        <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-#> $ cdm_name         <chr> "An OMOP CDM database", "An OMOP CDM database", "An O…
+#> $ result_id        <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+#> $ cdm_name         <chr> "GiBleed", "GiBleed", "GiBleed", "GiBleed", "GiBleed"…
 #> $ group_name       <chr> "index_cohort_name &&& marker_cohort_name", "index_co…
 #> $ group_level      <chr> "aspirin &&& amoxicillin", "aspirin &&& amoxicillin",…
 #> $ strata_name      <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ strata_level     <chr> "overall", "overall", "overall", "overall", "overall"…
-#> $ variable_name    <chr> "crude", "adjusted", "crude", "crude", "adjusted", "a…
-#> $ variable_level   <chr> "sequence_ratio", "sequence_ratio", "sequence_ratio",…
-#> $ estimate_name    <chr> "point_estimate", "point_estimate", "lower_CI", "uppe…
-#> $ estimate_type    <chr> "numeric", "numeric", "numeric", "numeric", "numeric"…
-#> $ estimate_value   <chr> "1.43589743589744", "1629.5148627184", "0.95731197561…
+#> $ variable_name    <chr> "index", "index", "marker", "marker", "null", "crude"…
+#> $ variable_level   <chr> "first_pharmac", "first_pharmac", "first_pharmac", "f…
+#> $ estimate_name    <chr> "count", "percentage", "count", "percentage", "point_…
+#> $ estimate_type    <chr> "integer", "numeric", "integer", "numeric", "numeric"…
+#> $ estimate_value   <chr> "42", "58.3", "30", "41.7", "1.04487150121398", "1.4"…
 #> $ additional_name  <chr> "overall", "overall", "overall", "overall", "overall"…
 #> $ additional_level <chr> "overall", "overall", "overall", "overall", "overall"…
 ```
@@ -144,7 +213,10 @@ res %>% glimpse()
 The user could then visualise their results using a wide array of
 provided tools.
 
-For example, the following produces a gt table.
+For example, the following produces a gt table. This table contains the
+CSR, ASR and confidence intervals as well as the Null Sequence Ratio
+(NSR). It also contains the counts and percentages of how many sequences
+had the index first or marker first.
 
 ``` r
 gt_results <- tableSequenceRatios(result = res)
@@ -152,30 +224,40 @@ gt_results <- tableSequenceRatios(result = res)
 gt_results
 ```
 
-![](./man/figures/README-gt_table.png) Note that flextable is also an
-option, users may specify this by using the `type` argument.
+![](man/figures/tableSequenceRatios.png)
+
+Note that flextable is also an option, users may specify this by using
+the `type` argument.
 
 One could also visualise the plot, for example, the following is the
-plot of the adjusted sequence ratio.
+plot of the crude and adjusted sequence ratio. There is flexibility to
+just show the ASR and update colours.
 
 ``` r
-plotSequenceRatios(result = res,
-                  onlyaSR = T,
-                  colours = "black")
+
+sequence_ratio_plot <- plotSequenceRatios(
+  result = res,
+  onlyASR = FALSE
+)
+
+sequence_ratio_plot
 ```
 
-![](./man/figures/plotSR.png)
+![](man/figures/plotSequenceRatios.png)
 
-The user also has the freedom to plot temporal trend like so:
+The user also has the freedom to plot temporal trend to review the
+asymmetry between index and marker. The argument days (default 30 days)
+allows the user to create specific breaks for this plot:
 
 ``` r
-plotTemporalSymmetry(cdm = cdm, sequenceTable = "aspirin_amoxicillin")
+
+temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$aspirin_amoxicillin)
+
+temporal_symmetry_plot <- plotTemporalSymmetry(
+  result = temporal_symmetry
+)
+
+temporal_symmetry_plot
 ```
 
-![](./man/figures/plot_temporal.png)
-
-### Disconnect from the cdm database connection
-
-``` r
-CDMConnector::cdmDisconnect(cdm = cdm)
-```
+![](man/figures/plotTemporalSymmetry.png)

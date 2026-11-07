@@ -15,12 +15,9 @@ test_that("plot working", {
       cohortName = c("index_a", "index_b"),
       seed = 33
     )
-  db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-  cdm <- CDMConnector::copyCdmTo(db,
-                                   cdm,
-                                   schema = "main",
-                                   overwrite = TRUE)
-  cdm <- generateSequenceCohortSet(cdm, "index_cohort", "marker_cohort", "joined_cohort", combinationWindow = c(0, Inf))
+
+
+  cdm$joined_cohort <- sequenceCohort(cdm, "index_cohort", "marker_cohort", "joined_cohort", combinationWindow = c(0, Inf))
   result <- summariseSequenceRatios(cohort = cdm$joined_cohort)
 
   plotSR1 <- plotSequenceRatios(result)
@@ -35,7 +32,7 @@ test_that("plot working", {
   expect_true("ggplot" %in% (plotSR4 %>% class()))
   expect_true("ggplot" %in% (plotSR5 %>% class()))
 
-  CDMConnector::cdmDisconnect(cdm)
+
 })
 
 test_that("expected errors", {
@@ -55,12 +52,8 @@ test_that("expected errors", {
       cohortName = c("index_a", "index_b"),
       seed = 33
     )
-  db <- DBI::dbConnect(duckdb::duckdb(), ":memory:")
-  cdm <- CDMConnector::copyCdmTo(db,
-                                   cdm,
-                                   schema = "main",
-                                   overwrite = TRUE)
-  cdm <- generateSequenceCohortSet(cdm, "index_cohort", "marker_cohort", "joined_cohort", combinationWindow = c(0, Inf))
+
+  cdm$joined_cohort <- sequenceCohort(cdm, "index_cohort", "marker_cohort", "joined_cohort", combinationWindow = c(0, Inf))
   result <- summariseSequenceRatios(cohort = cdm$joined_cohort)
   result2 <- result %>%
     dplyr::select(-c("group_level"))
@@ -73,7 +66,7 @@ test_that("expected errors", {
   expect_error(plotSequenceRatios(result, onlyASR = 3))
   expect_error(plotSequenceRatios(result, onlyASR = TRUE, colours = c("red", "blue")))
 
-  CDMConnector::cdmDisconnect(cdm)
+
 })
 
 test_that("empty result error",{
@@ -111,10 +104,10 @@ test_that("empty result error",{
   cdm <- mockCohortSymmetry(indexCohort = indexCohort,
                             markerCohort = markerCohort)
 
-  cdm <- generateSequenceCohortSet(cdm = cdm,
+  cdm$joined_cohorts <- sequenceCohort(cdm = cdm,
                                    name = "joined_cohorts",
-                                   indexTable = "cohort_1",
-                                   markerTable = "cohort_2")
+                                   indexCohortTable = "cohort_1",
+                                   markerCohortTable = "cohort_2")
 
   expect_warning(
     sr <- summariseSequenceRatios(cohort = cdm$joined_cohorts)
@@ -128,5 +121,4 @@ test_that("empty result error",{
     plotSequenceRatios(sr2)
   )
 
-  CDMConnector::cdmDisconnect(cdm = cdm)
 })

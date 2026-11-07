@@ -8,8 +8,9 @@ plotSequenceRatios(
   result,
   onlyASR = FALSE,
   plotTitle = NULL,
-  labs = c("SR", "Drug Pairs"),
-  colours = c("red", "blue"),
+  style = "default",
+  labs = c("Sequence Ratio", "Index Marker Pair"),
+  colours = NULL,
   facet = NULL
 )
 }
@@ -20,6 +21,8 @@ plotSequenceRatios(
 Otherwise if it is set to be FALSE then both adjusted and crude SR will be plotted.}
 
 \item{plotTitle}{Title of the plot, if NULL no title will be included in the plot.}
+
+\item{style}{Style used for the plot. Passed to \code{visOmopResults::themeVisOmop()}.}
 
 \item{labs}{Axis labels for the plot.}
 
@@ -37,9 +40,9 @@ It provides a ggplot of the sequence ratios of index and marker cohorts.
 \donttest{
 library(CohortSymmetry)
 cdm <- mockCohortSymmetry()
-cdm <- generateSequenceCohortSet(cdm = cdm,
-                                 indexTable = "cohort_1",
-                                 markerTable = "cohort_2",
+cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+                                 indexCohortTable = "cohort_1",
+                                 markerCohortTable = "cohort_2",
                                  name = "joined_cohort")
 sequence_ratio <- summariseSequenceRatios(cohort = cdm$joined_cohort)
 plotSequenceRatios(result = sequence_ratio)

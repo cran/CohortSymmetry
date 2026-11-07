@@ -9,53 +9,73 @@ knitr::opts_chunk$set(
   eval = Sys.getenv("$RUNNER_OS") != "macOS"
 )
 
-## ----include = FALSE----------------------------------------------------------
-if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
-if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
-if (!CDMConnector::eunomiaIsAvailable()) CDMConnector::downloadEunomiaData()
+## ----message= FALSE, warning=FALSE--------------------------------------------
+library(omock)
+library(CohortSymmetry)
+
+cdm <- mockCdmFromDataset(datasetName = "GiBleed")
+
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-library(CDMConnector)
 library(dplyr)
-library(DBI)
-library(CohortSymmetry)
-library(duckdb)
+library(CodelistGenerator)
+library(CohortConstructor)
 
-db <- DBI::dbConnect(duckdb::duckdb(), 
-                     dbdir = CDMConnector::eunomiaDir())
-cdm <- cdmFromCon(
-  con = db,
-  cdmSchema = "main",
-  writeSchema = "main"
+aspirin_codelist <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm,
+  name = "aspirin",
+  nameStyle = "{concept_name}"
 )
+
+cdm[["aspirin"]] <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = aspirin_codelist,
+  exit = "event_end_date",
+  name = "aspirin")
+
+
+amoxicillin_codelist <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm,
+  name = "amoxicillin",
+  nameStyle = "{concept_name}"
+)
+
+cdm[["amoxicillin"]] <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = amoxicillin_codelist,
+  exit = "event_end_date",
+  name = "amoxicillin")
+
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 library(DrugUtilisation)
+
 cdm <- DrugUtilisation::generateIngredientCohortSet(
-  cdm = cdm,
+  cdm = cdm, 
   name = "aspirin",
   ingredient = "aspirin")
 
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
-  name = "acetaminophen",
-  ingredient = "acetaminophen")
+  name = "amoxicillin",
+  ingredient = "amoxicillin")
+
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 library(here)
 knitr::include_graphics(here("vignettes/1-NoRestrictions.png"))
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-cdm <- generateSequenceCohortSet(
+cdm$intersect <- sequenceCohort(
   cdm = cdm,
-  indexTable = "aspirin",
-  markerTable = "acetaminophen",
+  indexCohortTable = "aspirin",
+  markerCohortTable = "amoxicillin",
   name = "intersect",
-  cohortDateRange = as.Date(c(NA, NA)), #default
-  daysPriorObservation = 0, #default
-  washoutWindow = 0, #default
-  indexMarkerGap = Inf, #default
-  combinationWindow = c(0,Inf)) # default
+  cohortDateRange = as.Date(c(NA, NA)), 
+  sequencePriorObservation = 0, 
+  indexMarkerWashout = 0,
+  indexMarkerGap = Inf, 
+  combinationWindow = c(0,Inf)) 
 
 cdm$intersect |> 
   dplyr::glimpse()
@@ -64,67 +84,75 @@ cdm$intersect |>
 attr(cdm$intersect, "cohort_set")
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# cdm <- generateSequenceCohortSet(
+# cdm$intersect <- sequenceCohort(
 #   cdm = cdm,
-#   indexTable = "aspirin",
-#   markerTable = "acetaminophen",
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
 #   name = "intersect",
 #   cohortDateRange = as.Date(c(NA, NA)),
-#   indexId = 1,
-#   markerId = 1,
-#   daysPriorObservation = 0,
-#   washoutWindow = 0,
-#   indexMarkerGap = NULL,
+#   indexCohortId = 1,
+#   markerCohortId = 1,
+#   sequencePriorObservation = 0,
+#   indexMarkerWashout = 0,
+#   indexMarkerGap = Inf,
 #   combinationWindow = c(0,Inf))
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 knitr::include_graphics(here("vignettes/2-studyPeriod.png"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# cdm <- generateSequenceCohortSet(
+# cdm$intersect <- sequenceCohort(
 #   cdm = cdm,
-#   indexTable = "aspirin",
-#   markerTable = "acetaminophen",
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
 #   name = "intersect_study_period",
+#   sequencePriorObservation = 0,
+#   indexMarkerWashout = 0,
+#   indexMarkerGap = Inf,
 #   cohortDateRange = as.Date(c("1950-01-01","1969-01-01")))
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 knitr::include_graphics(here("vignettes/3-PriorObservation.png"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-#  cdm <- generateSequenceCohortSet(
-#    cdm = cdm,
-#    indexTable = "aspirin",
-#    markerTable = "acetaminophen",
-#    name = "intersect_prior_obs",
-#    cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
-#    daysPriorObservation = 365)
+# cdm$intersect <- sequenceCohort(
+#   cdm = cdm,
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
+#   name = "intersect_prior_obs",
+#   cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
+#   sequencePriorObservation = 365,
+#   indexMarkerWashout = 0,
+#   indexMarkerGap = Inf)
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 knitr::include_graphics(here("vignettes/4-washoutPeriod.png"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# cdm <- generateSequenceCohortSet(
+# cdm$intersect <- sequenceCohort(
 #   cdm = cdm,
-#   indexTable = "aspirin",
-#   markerTable = "acetaminophen",
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
 #   name = "intersect_washout",
 #   cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
-#   daysPriorObservation = 365,
-#   washoutWindow = 365)
+#   sequencePriorObservation = 365,
+#   indexMarkerWashout = 365,
+#   indexMarkerGap = Inf)
 
 ## ----echo=FALSE, message=FALSE, out.width="80%", warning=FALSE----------------
 knitr::include_graphics(here("vignettes/5-combinationWindow_numbers.png"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-#  cdm <- generateSequenceCohortSet(
-#    cdm = cdm,
-#    indexTable = "aspirin",
-#    markerTable = "acetaminophen",
-#    name = "intersect_changed_cw",
-#    cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
-#    daysPriorObservation = 365,
-#    combinationWindow = c(0, Inf))
+# cdm$intersect <- sequenceCohort(
+#   cdm = cdm,
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
+#   name = "intersect_changed_cw",
+#   cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
+#   sequencePriorObservation = 365,
+#   indexMarkerWashout = 365,
+#   indexMarkerGap = Inf,
+#   combinationWindow = c(0, Inf))
 # 
 #  cdm$intersect_changed_cw |>
 #    dplyr::filter(subject_id %in% c(80,187)) |>
@@ -134,15 +162,13 @@ knitr::include_graphics(here("vignettes/5-combinationWindow_numbers.png"))
 knitr::include_graphics(here("vignettes/6-indexGap.png"))
 
 ## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# cdm <- generateSequenceCohortSet(
+# cdm$intersect <- sequenceCohort(
 #   cdm = cdm,
-#   indexTable = "aspirin",
-#   markerTable = "acetaminophen",
+#   indexCohortTable = "aspirin",
+#   markerCohortTable = "amoxicillin",
 #   name = "intersect_",
 #   cohortDateRange = as.Date(c("1950-01-01","1969-01-01")),
-#   daysPriorObservation = 365,
+#   sequencePriorObservation = 365,
+#   indexMarkerWashout = 365,
 #   indexMarkerGap = 7)
-
-## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# CDMConnector::cdmDisconnect(cdm = cdm)
 

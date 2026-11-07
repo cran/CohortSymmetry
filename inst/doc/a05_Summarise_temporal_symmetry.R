@@ -9,68 +9,56 @@ knitr::opts_chunk$set(
   eval = Sys.getenv("$RUNNER_OS") != "macOS"
 )
 
-## ----include = FALSE----------------------------------------------------------
-if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
-if (!dir.exists(Sys.getenv("EUNOMIA_DATA_FOLDER"))) dir.create(Sys.getenv("EUNOMIA_DATA_FOLDER"))
-if (!CDMConnector::eunomiaIsAvailable()) CDMConnector::downloadEunomiaData()
-
 ## ----message= FALSE, warning=FALSE, include=FALSE-----------------------------
 # Load libraries
-library(CDMConnector)
 library(dplyr)
-library(DBI)
 library(CohortSymmetry)
-library(duckdb)
-library(DrugUtilisation)
+library(CohortConstructor)
+library(omock)
 
-# Connect to the database
-db <- DBI::dbConnect(duckdb::duckdb(), 
-                     dbdir = CDMConnector::eunomiaDir())
-cdm <- cdmFromCon(
-  con = db,
-  cdmSchema = "main",
-  writeSchema = "main"
-)
+# Get mock data from omock
+cdm <- mockCdmFromDataset(datasetName = "GiBleed")
 
-# Generate cohorts
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+# Generate index-marker cohorts
+aspirin_codelist <- CodelistGenerator::getDrugIngredientCodes(
   cdm = cdm,
   name = "aspirin",
-  ingredient = "aspirin")
+  nameStyle = "{concept_name}"
+)
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
+cdm[["aspirin"]] <- CohortConstructor::conceptCohort(
   cdm = cdm,
-  name = "acetaminophen",
-  ingredient = "acetaminophen")
+  conceptSet = aspirin_codelist,
+  exit = "event_end_date",
+  name = "aspirin")
 
-## ----message= FALSE, warning=FALSE--------------------------------------------
+
+amoxicillin_codelist <- CodelistGenerator::getDrugIngredientCodes(
+  cdm = cdm,
+  name = "amoxicillin",
+  nameStyle = "{concept_name}"
+)
+
+cdm[["amoxicillin"]] <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = amoxicillin_codelist,
+  exit = "event_end_date",
+  name = "amoxicillin")
+
 # Generate a sequence cohort
-cdm <- generateSequenceCohortSet(
+cdm$intersect <- sequenceCohort(
   cdm = cdm,
-  indexTable = "aspirin",
-  markerTable = "acetaminophen",
-  name = "intersect",
-  combinationWindow = c(0,Inf))
+  indexCohortTable = "aspirin",
+  markerCohortTable = "amoxicillin",
+  name = "intersect")
+
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseTemporalSymmetry(cohort = cdm$intersect) |> 
+summariseTemporalSymmetry(cohort = cdm$intersect, days = 30) |> 
   dplyr::glimpse()
 
 ## ----message= FALSE, warning=FALSE--------------------------------------------
 summariseTemporalSymmetry(cohort = cdm$intersect,
-                          cohortId = 1) |> 
+                          days = 60) |> 
   dplyr::glimpse()
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseTemporalSymmetry(cohort = cdm$intersect,
-                          timescale = "day") |> 
-  dplyr::glimpse()
-
-## ----message= FALSE, warning=FALSE--------------------------------------------
-summariseTemporalSymmetry(cohort = cdm$intersect,
-                          timescale = "year") |> 
-  dplyr::glimpse()
-
-## ----message= FALSE, warning=FALSE, eval=FALSE--------------------------------
-# CDMConnector::cdmDisconnect(cdm = cdm)
 

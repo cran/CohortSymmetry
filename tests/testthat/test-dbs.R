@@ -1,5 +1,6 @@
 test_that("SQL Server", {
   skip_on_cran()
+  testthat::skip_if_not_installed("CDMConnector")
   skip_if(Sys.getenv("SQL_SERVER_DRIVER") == "")
 
   db <- DBI::dbConnect(odbc::odbc(),
@@ -33,21 +34,21 @@ cdm <- CDMConnector::generateConceptCohortSet(cdm = cdm,
                                               limit = "all",
                                               overwrite = TRUE)
 
-expect_no_error(cdm <- generateSequenceCohortSet(cdm,
+expect_no_error(cdm$joined_cohorts <- sequenceCohort(cdm,
                                                  name = "joined_cohorts",
-                                                 indexTable ="csyim_index",
-                                                 markerTable = "csyim_marker",
+                                                 indexCohortTable ="csyim_index",
+                                                 markerCohortTable = "csyim_marker",
                                                  combinationWindow = c(0,Inf)))
 
 expect_true(nrow(cdm$joined_cohorts %>% dplyr::collect()) > 0)
 
-CDMConnector::dropTable(cdm, tidyselect::starts_with("csyim"))
+omopgenerics::dropSourceTable(cdm, tidyselect::starts_with("csyim"))
 
-CDMConnector::cdmDisconnect(cdm)
 })
 
 test_that("Redshift", {
   skip_on_cran()
+  testthat::skip_if_not_installed("CDMConnector")
   skip_if(Sys.getenv("CDM5_REDSHIFT_DBNAME") == "")
   db <- DBI::dbConnect(RPostgres::Redshift(),
                        dbname   = Sys.getenv("CDM5_REDSHIFT_DBNAME"),
@@ -77,11 +78,11 @@ test_that("Redshift", {
                                                    limit = "all",
                                                    overwrite = TRUE)
 
-  expect_no_error(cdm <- generateSequenceCohortSet(cdm,
-                                                   name = "joined_cohorts",
-                                                   indexTable ="csyim_index",
-                                                   markerTable = "csyim_marker",
-                                                   combinationWindow = c(0,Inf)))
+  expect_no_error(cdm$joined_cohorts <- sequenceCohort(cdm,
+                                        name = "joined_cohorts",
+                                        indexCohortTable ="csyim_index",
+                                        markerCohortTable = "csyim_marker",
+                                        combinationWindow = c(0,Inf)))
 
   expect_true(nrow(cdm$joined_cohorts %>% dplyr::collect()) > 0)
 

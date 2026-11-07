@@ -4,14 +4,14 @@
 \alias{summariseTemporalSymmetry}
 \title{Summarise temporal symmetry}
 \usage{
-summariseTemporalSymmetry(cohort, cohortId = NULL, timescale = "month")
+summariseTemporalSymmetry(cohort, cohortId = NULL, days = 30)
 }
 \arguments{
 \item{cohort}{A cohort table in the cdm.}
 
 \item{cohortId}{The Ids in the cohort that are to be included in the analyses.}
 
-\item{timescale}{Timescale for the x axis of the plot (month, day, year).}
+\item{days}{Numerical timescale for the x axis of the plot in days (Default is 30 days, if users want years put 365, days put 1).}
 }
 \value{
 An aggregated table with difference in time (marker - index) and the relevant
@@ -25,10 +25,10 @@ counts) of two cohorts.
 \donttest{
 library(CohortSymmetry)
 cdm <- mockCohortSymmetry()
-cdm <- generateSequenceCohortSet(cdm = cdm,
+cdm$joined_cohorts <- sequenceCohort(cdm = cdm,
                                  name = "joined_cohorts",
-                                 indexTable = "cohort_1",
-                                 markerTable = "cohort_2")
+                                 indexCohortTable = "cohort_1",
+                                 markerCohortTable = "cohort_2")
 temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$joined_cohorts)
 CDMConnector::cdmDisconnect(cdm)
 }

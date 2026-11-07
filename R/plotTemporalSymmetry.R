@@ -20,18 +20,19 @@
 #' \donttest{
 #' library(CohortSymmetry)
 #' cdm <- mockCohortSymmetry()
-#' cdm <- generateSequenceCohortSet(cdm = cdm,
-#'                                  indexTable = "cohort_1",
-#'                                  markerTable = "cohort_2",
+#' cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+#'                                  indexCohortTable = "cohort_1",
+#'                                  markerCohortTable = "cohort_2",
 #'                                  name = "joined_cohort")
 #' temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$joined_cohort)
 #' plotTemporalSymmetry(result = temporal_symmetry)
 #' CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
+
 plotTemporalSymmetry <- function(result,
                                  plotTitle = NULL,
-                                 labs = c("Time (months)", "Individuals (N)"),
-                                 xlim = c(-12, 12),
+                                 labs = c("Time (days)", "Individuals (N)"),
+                                 xlim = c(-365, 365),
                                  colours = c("blue", "red"),
                                  scales = "free") {
 
@@ -49,7 +50,7 @@ plotTemporalSymmetry <- function(result,
 
   plot_data <- result |>
     visOmopResults::splitGroup() |>
-    dplyr::select(.data$index_name, .data$marker_name, .data$variable_name, .data$variable_level, .data$estimate_name, .data$estimate_value, .data$additional_level, .data$additional_name) |>
+    dplyr::select("index_name", "marker_name", "variable_name", "variable_level", "estimate_name", "estimate_value", "additional_level", "additional_name") |>
     dplyr::group_by(.data$estimate_name) |>
     dplyr::mutate(row = dplyr::row_number()) |>
     tidyr::pivot_wider(names_from = "variable_name",
@@ -60,11 +61,11 @@ plotTemporalSymmetry <- function(result,
     dplyr::ungroup() |>
     dplyr::rename("time" = "temporal_symmetry") |>
     dplyr::filter(.data$time != 0) |>
+    dplyr::mutate(count = as.integer(.data$count),
+                  time = as.integer(.data$time)) |>
     dplyr::mutate(colour = dplyr::if_else(.data$time > 0, "B", "A")) |>
     dplyr::mutate(index_name = paste0("index = ", .data$index_name),
                   marker_name = paste0("marker = ", .data$marker_name)) |>
-    dplyr::mutate(count = as.integer(.data$count),
-                  time = as.integer(.data$time)) |>
     dplyr::compute()
 
   colours = c("A" = colours[1], "B" = colours[2])

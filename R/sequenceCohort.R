@@ -6,23 +6,21 @@
 #' Index and marker cohorts should be instantiated in advance by the user.
 #'
 #' @param cdm A CDM reference.
-#' @param indexTable A table in the CDM that the index cohorts should come from.
-#' @param markerTable A table in the CDM that the marker cohorts should come from.
+#' @param indexCohortTable A table in the CDM that the index cohorts should come from.
+#' @param markerCohortTable A table in the CDM that the marker cohorts should come from.
 #' @param name The name within the cdm that the output is called. Default is joined_cohorts.
-#' @param indexId Cohort definition IDs in indexTable to be considered for the analysis.
+#' @param indexCohortId Cohort definition IDs in indexCohortTable to be considered for the analysis.
 #' Change to NULL if all indices are wished to be included.
-#' @param markerId Cohort definition IDs in markerTable to be considered for the analysis.
+#' @param markerCohortId Cohort definition IDs in markerCohortTable to be considered for the analysis.
 #' Change to NULL if all markers are wished to be included.
 #' @param cohortDateRange Two dates indicating study period and the sequences that the user wants
 #' to restrict to.
-#' @param daysPriorObservation The minimum amount of prior observation required on both the index
-#' and marker cohorts per person.
-#' @param washoutWindow A washout window to be applied on both the index cohort event and marker cohort.
+#' @param sequencePriorObservation The minimum amount of prior observation required on the index marker sequence. Default is 365 days.
+#' @param indexMarkerWashout A washout window to be applied on both the index cohort and marker cohort. Default is 365 days.
 #' @param indexMarkerGap The maximum allowable gap between the end of the first episode
-#' and the start of the second episode in a sequence/combination.
+#' and the start of the second episode in a sequence/combination. Default is Inf.
 #' @param combinationWindow A constrain to be placed on the gap between two initiations.
 #' Default c(0,365), meaning the gap should be larger than 0 but less than or equal to 365.
-#' @param movingAverageRestriction The moving window when calculating nSR, default is 548.
 #'
 #' @return
 #' A table within the cdm reference.
@@ -32,45 +30,44 @@
 #' \donttest{
 #' library(CohortSymmetry)
 #' cdm <- mockCohortSymmetry()
-#' cdm <- generateSequenceCohortSet(
+#' cdm$joined_cohorts <- sequenceCohort(
 #'   cdm = cdm,
 #'   name = "joined_cohorts",
-#'   indexTable = "cohort_1",
-#'   markerTable = "cohort_2"
+#'   indexCohortTable = "cohort_1",
+#'   markerCohortTable = "cohort_2"
 #' )
 #'  cdm$joined_cohorts
-#'  CDMConnector::cdmDisconnect(cdm = cdm)
 #' }
-generateSequenceCohortSet <- function(cdm,
-                                      indexTable,
-                                      markerTable,
+sequenceCohort <- function(cdm,
+                                      indexCohortTable,
+                                      markerCohortTable,
                                       name,
-                                      indexId = NULL,
-                                      markerId = NULL,
+                                      indexCohortId = NULL,
+                                      markerCohortId = NULL,
                                       cohortDateRange = as.Date(c(NA, NA)),
-                                      daysPriorObservation = 0,
-                                      washoutWindow = 0,
+                                      sequencePriorObservation = 365,
+                                      indexMarkerWashout = 365,
                                       indexMarkerGap = Inf,
-                                      combinationWindow = c(0,365),
-                                      movingAverageRestriction = 548){
+                                      combinationWindow = c(0,365)){
   # checks
   cdm <- omopgenerics::validateCdmArgument(cdm = cdm)
-  omopgenerics::assertCharacter(indexTable, length = 1)
-  omopgenerics::assertCharacter(markerTable, length = 1)
-  cdm[[indexTable]] <- omopgenerics::validateCohortArgument(cohort  = cdm[[indexTable]])
-  cdm[[markerTable]] <- omopgenerics::validateCohortArgument(cohort = cdm[[markerTable]])
+  omopgenerics::assertCharacter(indexCohortTable, length = 1)
+  omopgenerics::assertCharacter(markerCohortTable, length = 1)
+  cdm[[indexCohortTable]] <- omopgenerics::validateCohortArgument(cohort  = cdm[[indexCohortTable]])
+  cdm[[markerCohortTable]] <- omopgenerics::validateCohortArgument(cohort = cdm[[markerCohortTable]])
   name <- omopgenerics::validateNameArgument(name = name, validation = "warning")
-  indexId <- omopgenerics::validateCohortIdArgument({{indexId}}, cdm[[indexTable]])
-  markerId <- omopgenerics::validateCohortIdArgument({{markerId}}, cdm[[markerTable]])
-  omopgenerics::assertNumeric(daysPriorObservation, min = 0, max = 999999)
-  omopgenerics::assertNumeric(washoutWindow, min = 0, max = 999999)
+  indexCohortId <- omopgenerics::validateCohortIdArgument({{indexCohortId}}, cdm[[indexCohortTable]])
+  markerCohortId <- omopgenerics::validateCohortIdArgument({{markerCohortId}}, cdm[[markerCohortTable]])
+  omopgenerics::assertNumeric(sequencePriorObservation, min = 0, max = 999999)
+  omopgenerics::assertNumeric(indexMarkerWashout, min = 0, max = 999999)
   omopgenerics::assertNumeric(indexMarkerGap, min = 0)
   omopgenerics::assertNumeric(combinationWindow, length = 2)
+  # set moving average restriction to max combination window
+  movingAverageRestriction <- combinationWindow[2]
   combinationWindow <- omopgenerics::validateWindowArgument(window = combinationWindow, snakeCase = TRUE)
   if(length(combinationWindow)!= 1) {
     cli::cli_abort("combinationWindow should contain only one window.")
   }
-  omopgenerics::assertNumeric(movingAverageRestriction, min = 0)
 
   # Change CohortDateRange
   if (any(is.na(cohortDateRange))) {
@@ -87,8 +84,8 @@ generateSequenceCohortSet <- function(cdm,
   nsr_summary_name <- paste0(nsr_name, "_summary")
 
   index_res <- inc_cohort_check(cdm = cdm,
-                                tableName = indexTable,
-                                cohortId = indexId,
+                                tableName = indexCohortTable,
+                                cohortId = indexCohortId,
                                 nsrTableName = nsr_name,
                                 cohortDateRange = cohortDateRange)
 
@@ -98,8 +95,8 @@ generateSequenceCohortSet <- function(cdm,
   }
 
   marker_res <- inc_cohort_check(cdm = cdm,
-                                 tableName = markerTable,
-                                 cohortId = markerId,
+                                 tableName = markerCohortTable,
+                                 cohortId = markerCohortId,
                                  nsrTableName = nsr_name,
                                  cohortDateRange = cohortDateRange)
 
@@ -109,14 +106,14 @@ generateSequenceCohortSet <- function(cdm,
   }
 
   index_nsr_summary <- inc_cohort_summary(cdm = cdm,
-                                          tableName = indexTable,
-                                          cohortId = indexId,
+                                          tableName = indexCohortTable,
+                                          cohortId = indexCohortId,
                                           nsrTableName = nsr_name,
                                           cohortDateRange = cohortDateRange)
 
   marker_nsr_summary <- inc_cohort_summary(cdm = cdm,
-                                           tableName = markerTable,
-                                           cohortId = markerId,
+                                           tableName = markerCohortTable,
+                                           cohortId = markerCohortId,
                                            nsrTableName = nsr_name,
                                            cohortDateRange = cohortDateRange)
 
@@ -201,16 +198,16 @@ generateSequenceCohortSet <- function(cdm,
   nsr_tbl <- Reduce(dplyr::union_all, nsr_calc)
 
   # Preprocess both cohorts
-  indexPreprocessed <- preprocessCohort(cdm = cdm, cohortName = indexTable,
-                                        cohortId = indexId, cohortDateRange = cohortDateRange) |>
+  indexPreprocessed <- preprocessCohort(cdm = cdm, cohortName = indexCohortTable,
+                                        cohortId = indexCohortId, cohortDateRange = cohortDateRange) |>
     dplyr::rename("index_id" = "cohort_definition_id",
                   "index_name" = "cohort_name",
       "index_date" = "cohort_start_date",
       "index_end_date" = "cohort_end_date",
       "gap_to_prior_index" = "gap_to_prior"
     )
-  markerPreprocessed <- preprocessCohort(cdm = cdm, cohortName = markerTable,
-                                         cohortId = markerId, cohortDateRange = cohortDateRange) |>
+  markerPreprocessed <- preprocessCohort(cdm = cdm, cohortName = markerCohortTable,
+                                         cohortId = markerCohortId, cohortDateRange = cohortDateRange) |>
     dplyr::rename("marker_id" = "cohort_definition_id",
                   "marker_name" = "cohort_name",
                   "marker_date" = "cohort_start_date",
@@ -245,12 +242,18 @@ generateSequenceCohortSet <- function(cdm,
   # Post-join processing
   cdm[[name]] <- joinedData %>%
     dplyr::mutate(
-      gap = as.numeric(!!CDMConnector::datediff("index_date", "marker_date",
-                                                interval = "day")),
-      gap_index_marker = as.numeric(!!CDMConnector::datediff("index_end_date", "marker_date",
-                                        interval = "day")),
-      gap_marker_index = as.numeric(!!CDMConnector::datediff("marker_end_date", "index_date",
-                                                             interval = "day"))) |>
+      gap = as.numeric(clock::date_count_between(
+        start = .data$index_date,
+        end = .data$marker_date,
+        precision = "day")),
+      gap_index_marker = as.numeric(clock::date_count_between(
+        start = .data$index_end_date,
+        end = .data$marker_date,
+        precision = "day")),
+      gap_marker_index = as.numeric(clock::date_count_between(
+        start = .data$marker_end_date,
+        end = .data$index_date,
+        precision = "day"))) |>
     dplyr::mutate(
       cei = dplyr::if_else(.data$index_date < .data$marker_date,
                            .data$gap_index_marker, .data$gap_marker_index)
@@ -266,7 +269,7 @@ generateSequenceCohortSet <- function(cdm,
                    temporary = FALSE)
 
   cdm[["ids"]] <- cdm[[name]] |>
-    dplyr::select(.data$index_id, .data$marker_id) |>
+    dplyr::select("index_id", "marker_id") |>
     dplyr::distinct() |>
     dplyr::arrange(.data$index_id, .data$marker_id) |>
     dplyr::mutate(cohort_definition_id = as.integer(dplyr::row_number())) |>
@@ -299,14 +302,15 @@ generateSequenceCohortSet <- function(cdm,
     dplyr::distinct() |>
     dplyr::mutate(cohort_date_range = !!paste0("(",cohortDateRange[[1]], ",",
                                              cohortDateRange[[2]], ")"),
-                  days_prior_observation = !!format(daysPriorObservation, nsmall = 0),
-                  washout_window = !!format(washoutWindow, nsmall = 0),
+                  sequence_prior_observation = !!format(sequencePriorObservation, nsmall = 0),
+                  index_marker_washout = !!format(indexMarkerWashout, nsmall = 0),
                   index_marker_gap = !!format(indexMarkerGap, nsmall = 0),
                   combination_window = !!paste0(unlist(combinationWindow), collapse = ", "),
                   moving_average_restriction = !!format(movingAverageRestriction, nsmall = 0)) |>
     dplyr::left_join(nsr_tbl,
                      by = c("index_id", "marker_id"),
-                     copy = T)
+                     copy = T) %>%
+    dplyr::ungroup()
 
   cdm[[name]] <- cdm[[name]] |>
     dplyr::select(!c("cohort_name", "index_name", "marker_name"))
@@ -327,7 +331,7 @@ generateSequenceCohortSet <- function(cdm,
                                    cohortAttritionRef = NULL)
 
     # exclusion criteria - where attrition starts
-    # 1) within combination window
+    # 1) within combination window]
     cdm[[name]] <- cdm[[name]] %>%
       {if (is.infinite(combinationWindow[[1]][2]))
         dplyr::filter(.,
@@ -351,11 +355,10 @@ generateSequenceCohortSet <- function(cdm,
         dplyr::compute(name = name, temporary = FALSE) |>
         omopgenerics::recordCohortAttrition(reason="Events excluded due to the prespecified index marker gap")
     }
-
     # 3) days prior observation
     cdm[[name]] <- cdm[[name]] |>
       dplyr::filter(
-        .data$prior_observation >= .env$daysPriorObservation
+        .data$prior_observation >= .env$sequencePriorObservation
       ) |>
       dplyr::compute(name = name, temporary = FALSE) |>
       omopgenerics::recordCohortAttrition(reason="Events excluded due to insufficient prior history")
@@ -363,12 +366,11 @@ generateSequenceCohortSet <- function(cdm,
     # 4) washoutWindow
     cdm[[name]] <- cdm[[name]] |>
       dplyr::filter(
-        .data$gap_to_prior_index >= .env$washoutWindow | is.na(.data$gap_to_prior_index),
-        .data$gap_to_prior_marker >= .env$washoutWindow | is.na(.data$gap_to_prior_marker)
+        .data$gap_to_prior_index >= .env$indexMarkerWashout | is.na(.data$gap_to_prior_index),
+        .data$gap_to_prior_marker >= .env$indexMarkerWashout | is.na(.data$gap_to_prior_marker)
       ) |>
       dplyr::compute(name = name, temporary = FALSE) |>
       omopgenerics::recordCohortAttrition(reason="Events excluded due to insufficient washout window")
-
     # final output table
     cdm[[name]] <- cdm[[name]] |>
       dplyr::select("cohort_definition_id", "subject_id",
@@ -378,8 +380,8 @@ generateSequenceCohortSet <- function(cdm,
                      temporary = FALSE)
   }
 
-  cdm <- CDMConnector::dropTable(cdm = cdm, name = "ids")
-  CDMConnector::dropTable(cdm = cdm, name = dplyr::starts_with(nsr_name))
+  cdm <- omopgenerics::dropSourceTable(cdm = cdm, name = "ids")
+  omopgenerics::dropSourceTable(cdm = cdm, name = dplyr::starts_with(nsr_name))
 
-  return(cdm)
+  return(cdm[[name]])
 }

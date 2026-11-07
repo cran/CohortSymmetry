@@ -11,6 +11,7 @@
 #' See visOmopResults package for more information on how to use this parameter.
 #' @param type The desired format of the output table.
 #' @param hide Columns to drop from the output table.
+#' @param style Style used for the table.
 #'
 #' @return A formatted version of the sequence_symmetry object.
 #'
@@ -19,9 +20,9 @@
 #' \donttest{
 #' library(CohortSymmetry)
 #' cdm <- mockCohortSymmetry()
-#' cdm <- generateSequenceCohortSet(cdm = cdm,
-#'                                  indexTable = "cohort_1",
-#'                                  markerTable = "cohort_2",
+#' cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+#'                                  indexCohortTable = "cohort_1",
+#'                                  markerCohortTable = "cohort_2",
 #'                                  name = "joined_cohort")
 #' res <- summariseSequenceRatios(cohort = cdm$joined_cohort)
 #' gtResult <- tableSequenceRatios(res)
@@ -32,10 +33,19 @@ tableSequenceRatios <- function(result,
                                 header = "marker_cohort_name",
                                 groupColumn = "cdm_name",
                                 type = "gt",
+                                style = "default",
                                 hide = "variable_level") {
 
-  rlang::check_installed("flextable")
-  rlang::check_installed("gt")
+  rlang::check_installed("visOmopResults")
+
+  if (type == "flextable") {
+    rlang::check_installed("flextable")
+  }
+
+  if (type == "gt") {
+    rlang::check_installed("gt")
+  }
+
 
   # validate checks
   result <- omopgenerics::validateResultArgument(result)
@@ -51,14 +61,45 @@ tableSequenceRatios <- function(result,
     return(emptyResultTable(type))
   }
 
+  # Label the null sequence ratio
+  result <- result |>
+    dplyr::mutate(
+      estimate_name = dplyr::if_else(
+        .data$variable_name == "null",
+        "SR",
+        .data$estimate_name
+      )
+    )
+
+
+  ci <- omopgenerics::settings(result)$confidence_interval
+  ci <- unique(ci[!is.na(ci)])[1]
+
+  if (is.na(ci)) {
+    ci <- 95
+  }
+
+
+  estimate_name <- c(
+    "<count> (<percentage>%)",
+    "<point_estimate> [<lower_CI> - <upper_CI>]"
+  )
+
+  names(estimate_name) <- c(
+    "N (%)",
+    sprintf("SR [CI %s%%]", ci)
+  )
+
   # format table
   tab <- visOmopResults::visOmopTable(
     result = result,
-    estimateName = c("N (%)" = "<count> (<percentage>%)",
-                     "SR [CI 95%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+    estimateName = estimate_name,
     header = header,
     groupColumn = groupColumn,
     type = type,
-    hide = hide
+    hide = hide,
+    style = style
   )
+
+  return(tab)
 }

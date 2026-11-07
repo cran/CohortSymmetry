@@ -1,5 +1,10 @@
 test_that("eunomia - generateSequenceCohortSet", {
   skip_on_cran()
+  testthat::skip_if_not_installed("CDMConnector")
+  testthat::skip_if_not_installed("duckdb")
+  testthat::skip_if_not_installed("flextable")
+  testthat::skip_if_not_installed("DrugUtilisation")
+
 
   if (Sys.getenv("EUNOMIA_DATA_FOLDER") == "") {
     Sys.setenv("EUNOMIA_DATA_FOLDER" = tempdir())
@@ -32,10 +37,10 @@ test_that("eunomia - generateSequenceCohortSet", {
   )
 
   expect_no_error(
-    cdm <- generateSequenceCohortSet(cdm,
+    cdm$joined_cohorts <- sequenceCohort(cdm,
                                      name = "joined_cohorts",
-                                     indexTable ="cohort1",
-                                     markerTable = "cohort2",
+                                     indexCohortTable ="cohort1",
+                                     markerCohortTable = "cohort2",
                                      combinationWindow = c(0,Inf)))
 
  expect_true(nrow(cdm$joined_cohorts %>% dplyr::collect()) > 0)
@@ -63,6 +68,7 @@ test_that("eunomia - generateSequenceCohortSet", {
 
 test_that("check redundant_fun", {
   skip_on_cran()
+  testthat::skip_if_not_installed("flextable")
   expect_no_error(
     redundant_fun()
   )

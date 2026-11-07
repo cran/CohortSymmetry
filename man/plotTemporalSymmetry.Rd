@@ -7,8 +7,8 @@
 plotTemporalSymmetry(
   result,
   plotTitle = NULL,
-  labs = c("Time (months)", "Individuals (N)"),
-  xlim = c(-12, 12),
+  labs = c("Time (days)", "Individuals (N)"),
+  xlim = c(-365, 365),
   colours = c("blue", "red"),
   scales = "free"
 )
@@ -38,9 +38,9 @@ It provides a ggplot of the temporal symmetry of two or more cohorts.
 \donttest{
 library(CohortSymmetry)
 cdm <- mockCohortSymmetry()
-cdm <- generateSequenceCohortSet(cdm = cdm,
-                                 indexTable = "cohort_1",
-                                 markerTable = "cohort_2",
+cdm$joined_cohort <- sequenceCohort(cdm = cdm,
+                                 indexCohortTable = "cohort_1",
+                                 markerCohortTable = "cohort_2",
                                  name = "joined_cohort")
 temporal_symmetry <- summariseTemporalSymmetry(cohort = cdm$joined_cohort)
 plotTemporalSymmetry(result = temporal_symmetry)
